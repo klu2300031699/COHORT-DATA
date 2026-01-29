@@ -3,6 +3,8 @@ import './CourseSelection.css'
 
 export default function CourseSelection({ cohort, employeeId }) {
   const [courses, setCourses] = useState({})
+  const [allCourses, setAllCourses] = useState([])
+  const [selectedSemester, setSelectedSemester] = useState('')
   const [selectedCourses, setSelectedCourses] = useState([])
   const [coursePriorities, setCoursePriorities] = useState({})
   const [loading, setLoading] = useState(true)
@@ -11,6 +13,33 @@ export default function CourseSelection({ cohort, employeeId }) {
   useEffect(() => {
     loadCourses()
   }, [cohort])
+
+  useEffect(() => {
+    if (allCourses.length === 0) return
+    
+    // Only display courses when a semester is selected
+    if (!selectedSemester) {
+      setCourses({})
+      return
+    }
+    
+    // Filter courses by semester
+    const filteredCourses = allCourses.filter(c => 
+      c.sem?.toUpperCase() === selectedSemester
+    )
+    
+    // Group by category
+    const grouped = {}
+    filteredCourses.forEach(course => {
+      const category = course.cat || 'Other'
+      if (!grouped[category]) {
+        grouped[category] = []
+      }
+      grouped[category].push(course)
+    })
+    
+    setCourses(grouped)
+  }, [selectedSemester, allCourses])
 
   const loadCourses = async () => {
     setLoading(true)
@@ -79,6 +108,9 @@ export default function CourseSelection({ cohort, employeeId }) {
         return
       }
       
+      // Store all courses
+      setAllCourses(allCourses)
+      
       // Group by category
       const grouped = {}
       allCourses.forEach(course => {
@@ -123,10 +155,6 @@ export default function CourseSelection({ cohort, employeeId }) {
   }
 
   const handleSubmit = () => {
-    // Get total available courses for this cohort
-    const allAvailableCourses = Object.values(courses).flat().map(c => c.courseCode)
-    const totalAvailable = allAvailableCourses.length
-
     // Validation: Check if all selected courses have priorities assigned
     const coursesWithoutPriority = selectedCourses.filter(
       courseCode => !coursePriorities[courseCode]
@@ -136,17 +164,29 @@ export default function CourseSelection({ cohort, employeeId }) {
       return
     }
 
-    // Validation: Must select at least 3 courses, or all if less than 3 available
-    if (totalAvailable >= 3) {
-      if (selectedCourses.length < 3) {
-        alert('⚠️ Please select at least 3 courses from your cohort.')
-        return
-      }
-    } else {
-      if (selectedCourses.length < totalAvailable) {
-        alert(`⚠️ Please select all available courses for your cohort (only ${totalAvailable} available).`)
-        return
-      }
+    // Get courses by semester
+    const oddCourses = allCourses.filter(c => c.sem?.toUpperCase() === 'ODD')
+    const evenCourses = allCourses.filter(c => c.sem?.toUpperCase() === 'EVEN')
+    
+    const selectedOdd = selectedCourses.filter(code => 
+      oddCourses.some(c => c.courseCode === code)
+    )
+    const selectedEven = selectedCourses.filter(code => 
+      evenCourses.some(c => c.courseCode === code)
+    )
+
+    // Validation: Check minimum requirements per semester
+    const oddRequired = oddCourses.length >= 3 ? 3 : oddCourses.length
+    const evenRequired = evenCourses.length >= 3 ? 3 : evenCourses.length
+    
+    if (selectedOdd.length < oddRequired) {
+      alert(`⚠️ Please select at least ${oddRequired} course(s) from ODD semester.\n(${oddCourses.length} courses available)`)
+      return
+    }
+    
+    if (selectedEven.length < evenRequired) {
+      alert(`⚠️ Please select at least ${evenRequired} course(s) from EVEN semester.\n(${evenCourses.length} courses available)`)
+      return
     }
 
     // Validation: At least one Option 1 priority
@@ -222,6 +262,28 @@ export default function CourseSelection({ cohort, employeeId }) {
       <div className="course-selection__year-heading">
         AY: 2026-27 (ODD & EVEN SEMESTER COURSES)
       </div>
+      
+      <div className="course-selection__filters">
+        <div className="course-filter">
+          <label className="course-filter__label">Academic Year</label>
+          <select className="course-filter__select" value="2025-2026" disabled>
+            <option value="2025-2026">2025-2026</option>
+          </select>
+        </div>
+        <div className="course-filter">
+          <label className="course-filter__label">Semester</label>
+          <select 
+            className="course-filter__select" 
+            value={selectedSemester}
+            onChange={(e) => setSelectedSemester(e.target.value)}
+          >
+            <option value="">Select Semester</option>
+            <option value="ODD">ODD Semester</option>
+            <option value="EVEN">EVEN Semester</option>
+          </select>
+        </div>
+      </div>
+
       <div className="course-selection__header">
         <h3 className="course-selection__title">
           Available Courses for Cohort <span className="course-selection__cohort-badge">{cohort}</span>

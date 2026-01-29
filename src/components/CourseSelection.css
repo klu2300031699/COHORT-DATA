@@ -6,6 +6,68 @@
   letter-spacing: 0.3px;
   text-align: left;
 }
+
+/* Semester Filter Styles */
+.course-selection__filters {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #fff6f6 0%, #fef8f8 100%);
+  border-radius: 12px;
+  border: 1.5px solid #f0eaea;
+  box-shadow: 0 2px 8px rgba(136, 0, 0, 0.04);
+}
+
+.course-filter {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.course-filter__label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #880000;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.course-filter__select {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  outline: none;
+}
+
+.course-filter__select:hover:not(:disabled) {
+  border-color: #880000;
+  box-shadow: 0 2px 8px rgba(136, 0, 0, 0.1);
+}
+
+.course-filter__select:focus {
+  border-color: #880000;
+  box-shadow: 0 0 0 3px rgba(136, 0, 0, 0.1);
+}
+
+.course-filter__select:disabled {
+  background: #f8f9fa;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.course-filter__select option {
+  padding: 0.5rem;
+  font-weight: 600;
+}
+
 .course-selection__year {
   font-size: 1.08rem;
   font-weight: 700;
@@ -402,6 +464,12 @@
 
 /* Responsive styles */
 @media (max-width: 768px) {
+  .course-selection__filters {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
   .course-selection__header {
     flex-direction: column;
     gap: 1rem;
