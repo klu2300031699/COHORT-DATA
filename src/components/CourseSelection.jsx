@@ -16,18 +16,18 @@ export default function CourseSelection({ cohort, employeeId }) {
 
   useEffect(() => {
     if (allCourses.length === 0) return
-    
+
     // Only display courses when a semester is selected
     if (!selectedSemester) {
       setCourses({})
       return
     }
-    
+
     // Filter courses by semester
-    const filteredCourses = allCourses.filter(c => 
+    const filteredCourses = allCourses.filter(c =>
       c.sem?.toUpperCase() === selectedSemester
     )
-    
+
     // Group by category
     const grouped = {}
     filteredCourses.forEach(course => {
@@ -37,29 +37,29 @@ export default function CourseSelection({ cohort, employeeId }) {
       }
       grouped[category].push(course)
     })
-    
+
     setCourses(grouped)
   }, [selectedSemester, allCourses])
 
   const loadCourses = async () => {
     setLoading(true)
     setError('')
-    
+
     try {
       // Fetch both CSV files
       const [y23Response, y24Response] = await Promise.all([
         fetch('/Y23 Data.csv'),
         fetch('/Y24 Data.csv')
       ])
-      
+
       const [y23Text, y24Text] = await Promise.all([
         y23Response.text(),
         y24Response.text()
       ])
-      
+
       // Parse and filter courses by cohort
       const allCourses = []
-      
+
       // Robust CSV parser for quoted fields with commas
       const parseCSV = (text) => {
         const lines = text.split('\n')
@@ -97,20 +97,20 @@ export default function CourseSelection({ cohort, employeeId }) {
           }
         }
       }
-      
+
       parseCSV(y23Text)
       parseCSV(y24Text)
-      
+
       if (allCourses.length === 0) {
         setError(`No courses found for cohort ${cohort}`)
         setCourses({})
         setLoading(false)
         return
       }
-      
+
       // Store all courses
       setAllCourses(allCourses)
-      
+
       // Group by category
       const grouped = {}
       allCourses.forEach(course => {
@@ -120,7 +120,7 @@ export default function CourseSelection({ cohort, employeeId }) {
         }
         grouped[category].push(course)
       })
-      
+
       setCourses(grouped)
     } catch (err) {
       setError('Error loading courses. Please try again.')
@@ -167,34 +167,43 @@ export default function CourseSelection({ cohort, employeeId }) {
     // Get courses by semester
     const oddCourses = allCourses.filter(c => c.sem?.toUpperCase() === 'ODD')
     const evenCourses = allCourses.filter(c => c.sem?.toUpperCase() === 'EVEN')
-    
-    const selectedOdd = selectedCourses.filter(code => 
+
+    const selectedOdd = selectedCourses.filter(code =>
       oddCourses.some(c => c.courseCode === code)
     )
-    const selectedEven = selectedCourses.filter(code => 
+    const selectedEven = selectedCourses.filter(code =>
       evenCourses.some(c => c.courseCode === code)
     )
 
     // Validation: Check minimum requirements per semester
     const oddRequired = oddCourses.length >= 3 ? 3 : oddCourses.length
     const evenRequired = evenCourses.length >= 3 ? 3 : evenCourses.length
-    
+
     if (selectedOdd.length < oddRequired) {
       alert(`⚠️ Please select at least ${oddRequired} course(s) from ODD semester.\n(${oddCourses.length} courses available)`)
       return
     }
-    
+
     if (selectedEven.length < evenRequired) {
       alert(`⚠️ Please select at least ${evenRequired} course(s) from EVEN semester.\n(${evenCourses.length} courses available)`)
       return
     }
 
-    // Validation: At least one Option 1 priority
-    const option1Courses = selectedCourses.filter(
+    // Validation: At least one Option 1 priority from ODD semester
+    const option1OddCourses = selectedOdd.filter(
       courseCode => coursePriorities[courseCode] === 'Option 1'
     )
-    if (option1Courses.length === 0) {
-      alert('⚠️ Please select at least ONE course with Option 1 before submitting.')
+    if (option1OddCourses.length === 0) {
+      alert('⚠️ Please select at least ONE course with Option 1 priority from ODD semester.')
+      return
+    }
+
+    // Validation: At least one Option 1 priority from EVEN semester
+    const option1EvenCourses = selectedEven.filter(
+      courseCode => coursePriorities[courseCode] === 'Option 1'
+    )
+    if (option1EvenCourses.length === 0) {
+      alert('⚠️ Please select at least ONE course with Option 1 priority from EVEN semester.')
       return
     }
 
@@ -207,22 +216,22 @@ export default function CourseSelection({ cohort, employeeId }) {
       })),
       timestamp: new Date().toISOString()
     }
-    
+
     console.log('Submission Data:', submissionData)
-    
+
     // Count courses by priority
     const option1Count = selectedCourses.filter(c => coursePriorities[c] === 'Option 1').length
     const option2Count = selectedCourses.filter(c => coursePriorities[c] === 'Option 2').length
     const option3Count = selectedCourses.filter(c => coursePriorities[c] === 'Option 3').length
-    
+
     alert(`✅ Successfully submitted ${selectedCourses.length} course(s)!\n\n` +
-          `Employee ID: ${employeeId}\n` +
-          `Cohort: ${cohort}\n\n` +
-          `Priority Breakdown:\n` +
-          `🔴 Option 1: ${option1Count} course(s)\n` +
-          `🟡 Option 2: ${option2Count} course(s)\n` +
-          `🔵 Option 3: ${option3Count} course(s)`)
-    
+      `Employee ID: ${employeeId}\n` +
+      `Cohort: ${cohort}\n\n` +
+      `Priority Breakdown:\n` +
+      `🔴 Option 1: ${option1Count} course(s)\n` +
+      `🟡 Option 2: ${option2Count} course(s)\n` +
+      `🔵 Option 3: ${option3Count} course(s)`)
+
     // Backend integration will be added later
   }
 
@@ -262,7 +271,7 @@ export default function CourseSelection({ cohort, employeeId }) {
       <div className="course-selection__year-heading">
         AY: 2026-27 (ODD & EVEN SEMESTER COURSES)
       </div>
-      
+
       <div className="course-selection__filters">
         <div className="course-filter">
           <label className="course-filter__label">Academic Year</label>
@@ -272,8 +281,8 @@ export default function CourseSelection({ cohort, employeeId }) {
         </div>
         <div className="course-filter">
           <label className="course-filter__label">Semester</label>
-          <select 
-            className="course-filter__select" 
+          <select
+            className="course-filter__select"
             value={selectedSemester}
             onChange={(e) => setSelectedSemester(e.target.value)}
           >
@@ -302,11 +311,11 @@ export default function CourseSelection({ cohort, employeeId }) {
               <h4 className="course-category__title">{category}</h4>
               <span className="course-category__count">{courses[category].length} courses</span>
             </div>
-            
+
             <div className="course-category__list">
               {courses[category].map(course => (
-                <label 
-                  key={course.courseCode} 
+                <label
+                  key={course.courseCode}
                   className={`course-item ${selectedCourses.includes(course.courseCode) ? 'course-item--selected' : ''} course-item--${course.sem?.toLowerCase() === 'odd' ? 'odd' : course.sem?.toLowerCase() === 'even' ? 'even' : ''}`}
                 >
                   <div className="course-item__checkbox-wrapper">
@@ -323,7 +332,7 @@ export default function CourseSelection({ cohort, employeeId }) {
                       <span className={`course-item__sem course-item__sem--${course.sem?.toLowerCase() === 'odd' ? 'odd' : course.sem?.toLowerCase() === 'even' ? 'even' : 'other'}`}>{course.sem}</span>
                     </div>
                     <p className="course-item__title">{course.courseTitle}</p>
-                    
+
                     {selectedCourses.includes(course.courseCode) && (
                       <div className="course-item__priority">
                         <span className="course-item__priority-label">Priority:</span>
@@ -370,13 +379,13 @@ export default function CourseSelection({ cohort, employeeId }) {
       </div>
 
       <div className="course-selection__footer">
-        <button 
+        <button
           className="course-selection__submit-btn"
           onClick={handleSubmit}
           disabled={selectedCourses.length === 0}
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
           </svg>
           Submit Selection ({selectedCourses.length} courses)
         </button>
