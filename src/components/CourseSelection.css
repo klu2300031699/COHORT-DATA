@@ -157,6 +157,7 @@
   gap: 1rem;
   cursor: pointer;
   transition: all 0.2s;
+  align-items: flex-start;
 }
 
 .course-item:hover {
@@ -168,6 +169,13 @@
 .course-item--selected {
   border-color: #880000;
   background: #fff5f5;
+  box-shadow: 0 2px 8px rgba(136, 0, 0, 0.08);
+}
+
+.course-item__checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  padding-top: 0.25rem;
 }
 
 .course-item__checkbox {
@@ -176,7 +184,6 @@
   cursor: pointer;
   accent-color: #880000;
   flex-shrink: 0;
-  margin-top: 0.25rem;
 }
 
 .course-item__content {
@@ -212,6 +219,88 @@
   font-size: 0.95rem;
   margin: 0;
   line-height: 1.4;
+}
+
+/* Priority Selection Styles */
+.course-item__priority {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 2px dashed #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.course-item__priority-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #880000;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.course-item__priority-options {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.priority-radio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.priority-radio input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #880000;
+}
+
+.priority-radio__label {
+  color: #666;
+  font-weight: 600;
+}
+
+.priority-radio:hover {
+  border-color: #880000;
+  background: #fafafa;
+}
+
+.priority-radio--high {
+  border-color: #dc3545;
+  background: #fff0f0;
+}
+
+.priority-radio--high .priority-radio__label {
+  color: #dc3545;
+}
+
+.priority-radio--medium {
+  border-color: #ffc107;
+  background: #fffbf0;
+}
+
+.priority-radio--medium .priority-radio__label {
+  color: #d39e00;
+}
+
+.priority-radio--poor {
+  border-color: #6c757d;
+  background: #f8f9fa;
+}
+
+.priority-radio--poor .priority-radio__label {
+  color: #495057;
 }
 
 .course-selection__footer {
@@ -308,6 +397,16 @@
     justify-content: center;
     padding: 0.875rem 1.5rem;
     font-size: 1rem;
+  }
+  
+  .course-item__priority-options {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .priority-radio {
+    width: 100%;
+    justify-content: flex-start;
   }
 }
 

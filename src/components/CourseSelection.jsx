@@ -4,6 +4,7 @@ import './CourseSelection.css'
 export default function CourseSelection({ cohort, employeeId }) {
   const [courses, setCourses] = useState({})
   const [selectedCourses, setSelectedCourses] = useState([])
+  const [coursePriorities, setCoursePriorities] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -100,23 +101,72 @@ export default function CourseSelection({ cohort, employeeId }) {
   const handleCourseToggle = (courseCode) => {
     setSelectedCourses(prev => {
       if (prev.includes(courseCode)) {
-        return prev.filter(code => code !== courseCode)
+        // Remove from selected courses and clear priority
+        const updated = prev.filter(code => code !== courseCode)
+        setCoursePriorities(prevPriorities => {
+          const newPriorities = { ...prevPriorities }
+          delete newPriorities[courseCode]
+          return newPriorities
+        })
+        return updated
       } else {
         return [...prev, courseCode]
       }
     })
   }
 
+  const handlePriorityChange = (courseCode, priority) => {
+    setCoursePriorities(prev => ({
+      ...prev,
+      [courseCode]: priority
+    }))
+  }
+
   const handleSubmit = () => {
+    // Validation: Check if at least one course has "Option 1" priority
+    const option1Courses = selectedCourses.filter(
+      courseCode => coursePriorities[courseCode] === 'Option 1'
+    )
+    
+    if (option1Courses.length === 0) {
+      alert('⚠️ Please select at least ONE course with Option 1 before submitting.')
+      return
+    }
+
+    // Validation: Check if all selected courses have priorities assigned
+    const coursesWithoutPriority = selectedCourses.filter(
+      courseCode => !coursePriorities[courseCode]
+    )
+    
+    if (coursesWithoutPriority.length > 0) {
+      alert('⚠️ Please assign priority (Option 1/Option 2/Option 3) to all selected courses.')
+      return
+    }
+
     const submissionData = {
       employeeId,
       cohort,
-      selectedCourses,
+      selectedCourses: selectedCourses.map(courseCode => ({
+        courseCode,
+        priority: coursePriorities[courseCode]
+      })),
       timestamp: new Date().toISOString()
     }
     
     console.log('Submission Data:', submissionData)
-    alert(`Successfully submitted ${selectedCourses.length} course(s)!\n\nEmployee ID: ${employeeId}\nCohort: ${cohort}\nCourses: ${selectedCourses.length}`)
+    
+    // Count courses by priority
+    const option1Count = selectedCourses.filter(c => coursePriorities[c] === 'Option 1').length
+    const option2Count = selectedCourses.filter(c => coursePriorities[c] === 'Option 2').length
+    const option3Count = selectedCourses.filter(c => coursePriorities[c] === 'Option 3').length
+    
+    alert(`✅ Successfully submitted ${selectedCourses.length} course(s)!\n\n` +
+          `Employee ID: ${employeeId}\n` +
+          `Cohort: ${cohort}\n\n` +
+          `Priority Breakdown:\n` +
+          `🔴 Option 1: ${option1Count} course(s)\n` +
+          `🟡 Option 2: ${option2Count} course(s)\n` +
+          `🔵 Option 3: ${option3Count} course(s)`)
     
     // Backend integration will be added later
   }
@@ -171,18 +221,58 @@ export default function CourseSelection({ cohort, employeeId }) {
                   key={course.courseCode} 
                   className={`course-item ${selectedCourses.includes(course.courseCode) ? 'course-item--selected' : ''}`}
                 >
-                  <input
-                    type="checkbox"
-                    className="course-item__checkbox"
-                    checked={selectedCourses.includes(course.courseCode)}
-                    onChange={() => handleCourseToggle(course.courseCode)}
-                  />
+                  <div className="course-item__checkbox-wrapper">
+                    <input
+                      type="checkbox"
+                      className="course-item__checkbox"
+                      checked={selectedCourses.includes(course.courseCode)}
+                      onChange={() => handleCourseToggle(course.courseCode)}
+                    />
+                  </div>
                   <div className="course-item__content">
                     <div className="course-item__header">
                       <span className="course-item__code">{course.courseCode}</span>
                       <span className="course-item__sem">{course.sem}</span>
                     </div>
                     <p className="course-item__title">{course.courseTitle}</p>
+                    
+                    {selectedCourses.includes(course.courseCode) && (
+                      <div className="course-item__priority">
+                        <span className="course-item__priority-label">Priority:</span>
+                        <div className="course-item__priority-options">
+                          <label className={`priority-radio ${coursePriorities[course.courseCode] === 'Option 1' ? 'priority-radio--high' : ''}`}>
+                            <input
+                              type="radio"
+                              name={`priority-${course.courseCode}`}
+                              value="Option 1"
+                              checked={coursePriorities[course.courseCode] === 'Option 1'}
+                              onChange={(e) => handlePriorityChange(course.courseCode, e.target.value)}
+                            />
+                            <span className="priority-radio__label">Option 1</span>
+                          </label>
+                          <label className={`priority-radio ${coursePriorities[course.courseCode] === 'Option 2' ? 'priority-radio--medium' : ''}`}>
+                            <input
+                              type="radio"
+                              name={`priority-${course.courseCode}`}
+                              value="Option 2"
+                              checked={coursePriorities[course.courseCode] === 'Option 2'}
+                              onChange={(e) => handlePriorityChange(course.courseCode, e.target.value)}
+                            />
+                            <span className="priority-radio__label">Option 2</span>
+                          </label>
+                          <label className={`priority-radio ${coursePriorities[course.courseCode] === 'Option 3' ? 'priority-radio--poor' : ''}`}>
+                            <input
+                              type="radio"
+                              name={`priority-${course.courseCode}`}
+                              value="Option 3"
+                              checked={coursePriorities[course.courseCode] === 'Option 3'}
+                              onChange={(e) => handlePriorityChange(course.courseCode, e.target.value)}
+                            />
+                            <span className="priority-radio__label">Option 3</span>
+                          </label>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </label>
               ))}
