@@ -245,7 +245,7 @@ export default function CourseSelection({ cohort, employeeId }) {
               {courses[category].map(course => (
                 <label 
                   key={course.courseCode} 
-                  className={`course-item ${selectedCourses.includes(course.courseCode) ? 'course-item--selected' : ''}`}
+                  className={`course-item ${selectedCourses.includes(course.courseCode) ? 'course-item--selected' : ''} course-item--${course.sem?.toLowerCase() === 'odd' ? 'odd' : course.sem?.toLowerCase() === 'even' ? 'even' : ''}`}
                 >
                   <div className="course-item__checkbox-wrapper">
                     <input

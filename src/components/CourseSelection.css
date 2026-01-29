@@ -175,10 +175,22 @@
   align-items: flex-start;
 }
 
+
 .course-item:hover {
-  border-color: #880000;
   box-shadow: 0 4px 12px rgba(136, 0, 0, 0.1);
   transform: translateY(-2px);
+}
+.course-item.course-item--selected.course-item--odd:hover,
+.course-item.course-item--odd:hover {
+  border-color: #2e7d32;
+}
+.course-item.course-item--selected.course-item--even:hover,
+.course-item.course-item--even:hover {
+  border-color: #1565c0;
+}
+.course-item.course-item--selected:hover:not(.course-item--odd):not(.course-item--even),
+.course-item:hover:not(.course-item--odd):not(.course-item--even) {
+  border-color: #880000;
 }
 
 .course-item--selected {
