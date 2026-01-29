@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import './CourseSelection.css'
+import './SubmittedCourses.css'
 
-export default function CourseSelection({ cohort, employeeId }) {
+export default function CourseSelection({ cohort, employeeId, name, department }) {
   const [courses, setCourses] = useState({})
   const [allCourses, setAllCourses] = useState([])
   const [selectedSemester, setSelectedSemester] = useState('')
@@ -9,9 +10,12 @@ export default function CourseSelection({ cohort, employeeId }) {
   const [coursePriorities, setCoursePriorities] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [alreadySubmitted, setAlreadySubmitted] = useState(false)
+  const [existingSelections, setExistingSelections] = useState([])
 
   useEffect(() => {
     loadCourses()
+    checkExistingSubmission()
   }, [cohort])
 
   useEffect(() => {
@@ -40,7 +44,20 @@ export default function CourseSelection({ cohort, employeeId }) {
 
     setCourses(grouped)
   }, [selectedSemester, allCourses])
-
+  const checkExistingSubmission = async () => {
+    try {
+      const response = await fetch(`http://localhost:1091/api/faculty/${employeeId}`)
+      if (response.ok) {
+        const data = await response.json()
+        if (data && data.length > 0) {
+          setAlreadySubmitted(true)
+          setExistingSelections(data)
+        }
+      }
+    } catch (err) {
+      console.log('No existing submission found or error checking:', err)
+    }
+  }
   const loadCourses = async () => {
     setLoading(true)
     setError('')
@@ -148,13 +165,19 @@ export default function CourseSelection({ cohort, employeeId }) {
   }
 
   const handlePriorityChange = (courseCode, priority) => {
+    // Map priority to include level indicator
+    const priorityMap = {
+      'Option 1': 'Option 1 [High]',
+      'Option 2': 'Option 2 [Medium]',
+      'Option 3': 'Option 3 [Low]'
+    }
     setCoursePriorities(prev => ({
       ...prev,
-      [courseCode]: priority
+      [courseCode]: priorityMap[priority] || priority
     }))
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Validation: Check if all selected courses have priorities assigned
     const coursesWithoutPriority = selectedCourses.filter(
       courseCode => !coursePriorities[courseCode]
@@ -175,64 +198,135 @@ export default function CourseSelection({ cohort, employeeId }) {
       evenCourses.some(c => c.courseCode === code)
     )
 
-    // Validation: Check minimum requirements per semester
-    const oddRequired = oddCourses.length >= 3 ? 3 : oddCourses.length
-    const evenRequired = evenCourses.length >= 3 ? 3 : evenCourses.length
+    // Group courses by category for each semester
+    const oddCategories = {}
+    oddCourses.forEach(course => {
+      const cat = course.cat || 'Other'
+      if (!oddCategories[cat]) oddCategories[cat] = []
+      oddCategories[cat].push(course)
+    })
 
-    if (selectedOdd.length < oddRequired) {
-      alert(`⚠️ Please select at least ${oddRequired} course(s) from ODD semester.\n(${oddCourses.length} courses available)`)
-      return
+    const evenCategories = {}
+    evenCourses.forEach(course => {
+      const cat = course.cat || 'Other'
+      if (!evenCategories[cat]) evenCategories[cat] = []
+      evenCategories[cat].push(course)
+    })
+
+    const oddCategoryCount = Object.keys(oddCategories).length
+    const evenCategoryCount = Object.keys(evenCategories).length
+
+    // NEW LOGIC: If cohort has < 3 courses total, select all
+    const totalCourses = oddCourses.length + evenCourses.length
+
+    if (totalCourses < 3) {
+      // Must select all courses
+      if (selectedCourses.length < totalCourses) {
+        alert(`⚠️ This cohort has less than 3 courses. Please select all ${totalCourses} available courses.`)
+        return
+      }
+    } else {
+      // NEW LOGIC: Must select 1 course from each category
+      // Check ODD semester categories
+      for (const category of Object.keys(oddCategories)) {
+        const selectedFromCategory = selectedOdd.filter(code =>
+          oddCategories[category].some(c => c.courseCode === code)
+        )
+        if (selectedFromCategory.length === 0) {
+          alert(`⚠️ Please select at least 1 course from category "${category}" in ODD semester.`)
+          return
+        }
+      }
+
+      // Check EVEN semester categories
+      for (const category of Object.keys(evenCategories)) {
+        const selectedFromCategory = selectedEven.filter(code =>
+          evenCategories[category].some(c => c.courseCode === code)
+        )
+        if (selectedFromCategory.length === 0) {
+          alert(`⚠️ Please select at least 1 course from category "${category}" in EVEN semester.`)
+          return
+        }
+      }
     }
 
-    if (selectedEven.length < evenRequired) {
-      alert(`⚠️ Please select at least ${evenRequired} course(s) from EVEN semester.\n(${evenCourses.length} courses available)`)
-      return
-    }
-
-    // Validation: At least one Option 1 priority from ODD semester
+    // Validation: At least one Option 1 [High] priority from ODD semester
     const option1OddCourses = selectedOdd.filter(
-      courseCode => coursePriorities[courseCode] === 'Option 1'
+      courseCode => coursePriorities[courseCode]?.includes('Option 1')
     )
     if (option1OddCourses.length === 0) {
-      alert('⚠️ Please select at least ONE course with Option 1 priority from ODD semester.')
+      alert('⚠️ Please select at least ONE course with Option 1 [High] priority from ODD semester.')
       return
     }
 
-    // Validation: At least one Option 1 priority from EVEN semester
+    // Validation: At least one Option 1 [High] priority from EVEN semester
     const option1EvenCourses = selectedEven.filter(
-      courseCode => coursePriorities[courseCode] === 'Option 1'
+      courseCode => coursePriorities[courseCode]?.includes('Option 1')
     )
     if (option1EvenCourses.length === 0) {
-      alert('⚠️ Please select at least ONE course with Option 1 priority from EVEN semester.')
+      alert('⚠️ Please select at least ONE course with Option 1 [High] priority from EVEN semester.')
       return
     }
+
+    // Prepare data for backend
+    const selectedCoursesData = selectedCourses.map(courseCode => {
+      const course = allCourses.find(c => c.courseCode === courseCode)
+      return {
+        courseCode: courseCode,
+        courseName: course?.courseTitle || '',
+        category: course?.cat || '',
+        semester: course?.sem || '',
+        priority: coursePriorities[courseCode]
+      }
+    })
 
     const submissionData = {
       employeeId,
+      name,  // Faculty name
       cohort,
-      selectedCourses: selectedCourses.map(courseCode => ({
-        courseCode,
-        priority: coursePriorities[courseCode]
-      })),
-      timestamp: new Date().toISOString()
+      department,
+      selectedCourses: selectedCoursesData
     }
 
-    console.log('Submission Data:', submissionData)
+    try {
+      const response = await fetch('http://localhost:1091/api/faculty/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submissionData)
+      })
 
-    // Count courses by priority
-    const option1Count = selectedCourses.filter(c => coursePriorities[c] === 'Option 1').length
-    const option2Count = selectedCourses.filter(c => coursePriorities[c] === 'Option 2').length
-    const option3Count = selectedCourses.filter(c => coursePriorities[c] === 'Option 3').length
+      if (response.ok) {
+        const result = await response.json()
+        console.log('Successfully saved to database:', result)
 
-    alert(`✅ Successfully submitted ${selectedCourses.length} course(s)!\n\n` +
-      `Employee ID: ${employeeId}\n` +
-      `Cohort: ${cohort}\n\n` +
-      `Priority Breakdown:\n` +
-      `🔴 Option 1: ${option1Count} course(s)\n` +
-      `🟡 Option 2: ${option2Count} course(s)\n` +
-      `🔵 Option 3: ${option3Count} course(s)`)
+        // Count courses by priority
+        const option1Count = selectedCourses.filter(c => coursePriorities[c]?.includes('Option 1')).length
+        const option2Count = selectedCourses.filter(c => coursePriorities[c]?.includes('Option 2')).length
+        const option3Count = selectedCourses.filter(c => coursePriorities[c]?.includes('Option 3')).length
 
-    // Backend integration will be added later
+        alert(`✅ Successfully submitted ${selectedCourses.length} course(s) to database!\n\n` +
+          `Employee ID: ${employeeId}\n` +
+          `Name: ${name}\n` +
+          `Cohort: ${cohort}\n\n` +
+          `Priority Breakdown:\n` +
+          `🔴 Option 1 [High]: ${option1Count} course(s)\n` +
+          `🟡 Option 2 [Medium]: ${option2Count} course(s)\n` +
+          `🔵 Option 3 [Low]: ${option3Count} course(s)`)
+
+        // Refresh to show submitted data
+        setAlreadySubmitted(true)
+        setExistingSelections(result)
+      } else {
+        const errorText = await response.text()
+        alert('❌ Error submitting data: ' + errorText)
+        console.error('Submission error:', errorText)
+      }
+    } catch (err) {
+      alert('❌ Error connecting to backend. Please make sure the backend server is running.')
+      console.error('Backend connection error:', err)
+    }
   }
 
   if (loading) {
@@ -262,6 +356,54 @@ export default function CourseSelection({ cohort, employeeId }) {
           </div>
         </div>
         <div className="course-selection__error">{error}</div>
+      </div>
+    )
+  }
+
+  // If user has already submitted, show their selections
+  if (alreadySubmitted && existingSelections.length > 0) {
+    return (
+      <div className="course-selection">
+        <div className="course-selection__year-heading">
+          AY: 2026-27 (ODD & EVEN SEMESTER COURSES)
+        </div>
+
+        <div className="course-selection__header">
+          <h3 className="course-selection__title">
+            Your Submitted Course Selections
+          </h3>
+          <div className="course-selection__counter">
+            <span className="course-selection__count">{existingSelections.length}</span>
+            <span className="course-selection__count-label">Courses</span>
+          </div>
+        </div>
+
+        <div className="course-selection__info-banner">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+          </svg>
+          <p>You have already submitted your course selections. Contact the administrator if you need to make changes.</p>
+        </div>
+
+        <div className="course-selection__submitted-list">
+          {existingSelections.map((selection, index) => (
+            <div key={index} className="submitted-course-card">
+              <div className="submitted-course-card__header">
+                <span className="submitted-course-card__code">{selection.courseCode}</span>
+                <span className={`submitted-course-card__priority priority--${selection.priority?.toLowerCase().replace(/ /g, '-')}`}>
+                  {selection.priority}
+                </span>
+              </div>
+              <h4 className="submitted-course-card__title">{selection.courseName}</h4>
+              <div className="submitted-course-card__details">
+                <span className="submitted-course-card__badge">{selection.category}</span>
+                <span className={`submitted-course-card__sem submitted-course-card__sem--${selection.semester?.toLowerCase()}`}>
+                  {selection.semester} Semester
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     )
   }
@@ -348,35 +490,35 @@ export default function CourseSelection({ cohort, employeeId }) {
                         <div className="course-item__priority">
                           <span className="course-item__priority-label">Priority:</span>
                           <div className="course-item__priority-options">
-                            <label className={`priority-radio ${coursePriorities[course.courseCode] === 'Option 1' ? 'priority-radio--high' : ''}`}>
+                            <label className={`priority-radio ${coursePriorities[course.courseCode]?.includes('Option 1') ? 'priority-radio--high' : ''}`}>
                               <input
                                 type="radio"
                                 name={`priority-${course.courseCode}`}
                                 value="Option 1"
-                                checked={coursePriorities[course.courseCode] === 'Option 1'}
+                                checked={coursePriorities[course.courseCode]?.includes('Option 1')}
                                 onChange={(e) => handlePriorityChange(course.courseCode, e.target.value)}
                               />
-                              <span className="priority-radio__label">Option 1</span>
+                              <span className="priority-radio__label">Option 1 [High]</span>
                             </label>
-                            <label className={`priority-radio ${coursePriorities[course.courseCode] === 'Option 2' ? 'priority-radio--medium' : ''}`}>
+                            <label className={`priority-radio ${coursePriorities[course.courseCode]?.includes('Option 2') ? 'priority-radio--medium' : ''}`}>
                               <input
                                 type="radio"
                                 name={`priority-${course.courseCode}`}
                                 value="Option 2"
-                                checked={coursePriorities[course.courseCode] === 'Option 2'}
+                                checked={coursePriorities[course.courseCode]?.includes('Option 2')}
                                 onChange={(e) => handlePriorityChange(course.courseCode, e.target.value)}
                               />
-                              <span className="priority-radio__label">Option 2</span>
+                              <span className="priority-radio__label">Option 2 [Medium]</span>
                             </label>
-                            <label className={`priority-radio ${coursePriorities[course.courseCode] === 'Option 3' ? 'priority-radio--poor' : ''}`}>
+                            <label className={`priority-radio ${coursePriorities[course.courseCode]?.includes('Option 3') ? 'priority-radio--poor' : ''}`}>
                               <input
                                 type="radio"
                                 name={`priority-${course.courseCode}`}
                                 value="Option 3"
-                                checked={coursePriorities[course.courseCode] === 'Option 3'}
+                                checked={coursePriorities[course.courseCode]?.includes('Option 3')}
                                 onChange={(e) => handlePriorityChange(course.courseCode, e.target.value)}
                               />
-                              <span className="priority-radio__label">Option 3</span>
+                              <span className="priority-radio__label">Option 3 [Low]</span>
                             </label>
                           </div>
                         </div>

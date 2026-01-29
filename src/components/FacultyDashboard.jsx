@@ -81,7 +81,13 @@ export default function FacultyDashboard({ userId }) {
     <div className="faculty-dashboard">
       <div className="faculty-dashboard__container">
         <FacultyInfo facultyData={facultyData} onReset={null} />
-        <CourseSelection cohort={facultyData.cohort} employeeId={facultyData.empId} isAdminView={false} />
+        <CourseSelection 
+          cohort={facultyData.cohort} 
+          employeeId={facultyData.empId} 
+          name={facultyData.empName}
+          department={facultyData.dept}
+          isAdminView={false} 
+        />
       </div>
     </div>
   )

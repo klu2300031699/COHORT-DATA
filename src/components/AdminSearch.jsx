@@ -100,7 +100,13 @@ export default function AdminSearch() {
         ) : (
           <>
             <FacultyInfo facultyData={facultyData} onReset={handleReset} />
-            <CourseSelection cohort={facultyData.cohort} employeeId={facultyData.empId} isAdminView={true} />
+            <CourseSelection 
+              cohort={facultyData.cohort} 
+              employeeId={facultyData.empId} 
+              name={facultyData.empName}
+              department={facultyData.dept}
+              isAdminView={true} 
+            />
           </>
         )}
       </div>
