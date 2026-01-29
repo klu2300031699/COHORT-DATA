@@ -46,7 +46,7 @@ export default function CourseSelection({ cohort, employeeId, name, department }
   }, [selectedSemester, allCourses])
   const checkExistingSubmission = async () => {
     try {
-      const response = await fetch(`http://localhost:1091/api/faculty/${employeeId}`)
+      const response = await fetch(`https://cohort-backend-production.up.railway.app/api/faculty/${employeeId}`)
       if (response.ok) {
         const data = await response.json()
         if (data && data.length > 0) {
@@ -289,7 +289,7 @@ export default function CourseSelection({ cohort, employeeId, name, department }
     }
 
     try {
-      const response = await fetch('http://localhost:1091/api/faculty/submit', {
+      const response = await fetch('https://cohort-backend-production.up.railway.app/api/faculty/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
