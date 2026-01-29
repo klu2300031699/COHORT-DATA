@@ -30,23 +30,39 @@ export default function CourseSelection({ cohort, employeeId }) {
       // Parse and filter courses by cohort
       const allCourses = []
       
+      // Robust CSV parser for quoted fields with commas
       const parseCSV = (text) => {
         const lines = text.split('\n')
         for (let i = 1; i < lines.length; i++) {
           const line = lines[i].trim()
           if (!line) continue
-          
-          const columns = line.split(',')
+
+          // Split CSV line respecting quoted fields
+          const columns = []
+          let current = ''
+          let inQuotes = false
+          for (let j = 0; j < line.length; j++) {
+            const char = line[j]
+            if (char === '"') {
+              inQuotes = !inQuotes
+            } else if (char === ',' && !inQuotes) {
+              columns.push(current)
+              current = ''
+            } else {
+              current += char
+            }
+          }
+          columns.push(current)
+
           const courseCohort = columns[2]?.trim()
-          
           if (courseCohort === cohort) {
             allCourses.push({
               sNo: columns[0],
               cat: columns[1],
               cohort: columns[2],
               courseCode: columns[3],
-              courseTitle: columns[4],
-              sem: columns[5]
+              courseTitle: columns[4]?.replace(/^"|"$/g, ''),
+              sem: columns[5]?.replace(/^"|"$/g, '')
             })
           }
         }
