@@ -112,6 +112,26 @@
   font-size: 1rem;
 }
 
+.registration-header__report-btn {
+  background: white;
+  color: #880000;
+  border: 2px solid white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+}
+
+.registration-header__report-btn:hover {
+  background: #f5f5f5;
+  transform: translateY(-1px);
+}
+
 .registration-header__logout-btn {
   background: white;
   color: #880000;
