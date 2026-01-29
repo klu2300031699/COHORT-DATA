@@ -266,8 +266,8 @@ export default function CourseSelection({ cohort, employeeId }) {
       <div className="course-selection__filters">
         <div className="course-filter">
           <label className="course-filter__label">Academic Year</label>
-          <select className="course-filter__select" value="2025-2026" disabled>
-            <option value="2025-2026">2025-2026</option>
+          <select className="course-filter__select" value="2026-2027" disabled>
+            <option value="2026-2027">2026-2027</option>
           </select>
         </div>
         <div className="course-filter">
