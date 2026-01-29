@@ -1,0 +1,75 @@
+.faculty-dashboard {
+  min-height: calc(100vh - 85px);
+  background: #ffffff;
+  padding: 3rem 1.5rem;
+  width: 100%;
+}
+
+.faculty-dashboard__container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.faculty-dashboard__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 2rem;
+  gap: 1rem;
+}
+
+.faculty-dashboard__spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #880000;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.faculty-dashboard__loading p {
+  color: #666;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.faculty-dashboard__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 2rem;
+  gap: 1.5rem;
+  color: #dc3545;
+}
+
+.faculty-dashboard__error svg {
+  width: 60px;
+  height: 60px;
+}
+
+.faculty-dashboard__error p {
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  max-width: 500px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .faculty-dashboard {
+    padding: 2rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .faculty-dashboard {
+    padding: 1.5rem 0.75rem;
+  }
+}

@@ -18,13 +18,15 @@ export default function FacultyInfo({ facultyData, onReset }) {
           <div className="faculty-card__name">{facultyData.empName}</div>
           <div className="faculty-card__id">Employee ID: <span>{facultyData.empId}</span></div>
         </div>
-        <button className="faculty-card__back-btn" onClick={onReset}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#880000" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" fill="#fff" stroke="#880000" strokeWidth="2"/>
-            <path d="M15 9l-3 3 3 3" stroke="#880000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-          </svg>
-          <span>Back</span>
-        </button>
+        {onReset && (
+          <button className="faculty-card__back-btn" onClick={onReset}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#880000" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" fill="#fff" stroke="#880000" strokeWidth="2"/>
+              <path d="M15 9l-3 3 3 3" stroke="#880000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+            </svg>
+            <span>Back</span>
+          </button>
+        )}
       </div>
       <div className="faculty-card__details">
         <div className="faculty-card__detail">

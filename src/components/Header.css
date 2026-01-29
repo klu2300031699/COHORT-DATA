@@ -97,6 +97,41 @@
   min-width: 120px;
 }
 
+.registration-header__user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.registration-header__user-id {
+  background: white;
+  color: #880000;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.registration-header__logout-btn {
+  background: white;
+  color: #880000;
+  border: 2px solid white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+}
+
+.registration-header__logout-btn:hover {
+  background: #f5f5f5;
+  transform: translateY(-1px);
+}
+
 /* Responsive styles */
 /* Large laptops and desktops (1200px to 1600px) */
 @media (max-width: 1600px) {
@@ -227,6 +262,12 @@
   
   .registration-header__right {
     margin-right: 0;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .registration-header__user-info {
+    flex-wrap: wrap;
   }
   
   .registration-header__logo {
