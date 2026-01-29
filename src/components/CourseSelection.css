@@ -194,9 +194,17 @@
 }
 
 .course-item--selected {
-  border-color: #880000;
   background: #fff5f5;
   box-shadow: 0 2px 8px rgba(136, 0, 0, 0.08);
+}
+.course-item--selected.course-item--odd {
+  border-color: #2e7d32;
+}
+.course-item--selected.course-item--even {
+  border-color: #1565c0;
+}
+.course-item--selected:not(.course-item--odd):not(.course-item--even) {
+  border-color: #880000;
 }
 
 .course-item__checkbox-wrapper {
@@ -248,11 +256,13 @@
   background: #e8f5e9;
   color: #2e7d32;
   border: 1.5px solid #66bb6a;
+  font-weight: 700;
 }
 .course-item__sem--even {
   background: #e3f2fd;
   color: #1565c0;
   border: 1.5px solid #42a5f5;
+  font-weight: 700;
 }
 .course-item__sem--other {
   background: #f3e5f5;
