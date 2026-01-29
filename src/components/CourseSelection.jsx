@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './CourseSelection.css'
 import './SubmittedCourses.css'
 
-export default function CourseSelection({ cohort, employeeId, name, department }) {
+export default function CourseSelection({ cohort, employeeId, name, department, isAdminView = false }) {
   const [courses, setCourses] = useState({})
   const [allCourses, setAllCourses] = useState([])
   const [selectedSemester, setSelectedSemester] = useState('')
@@ -12,6 +12,8 @@ export default function CourseSelection({ cohort, employeeId, name, department }
   const [error, setError] = useState('')
   const [alreadySubmitted, setAlreadySubmitted] = useState(false)
   const [existingSelections, setExistingSelections] = useState([])
+  const [editingId, setEditingId] = useState(null)
+  const [editFormData, setEditFormData] = useState({})
 
   useEffect(() => {
     loadCourses()
@@ -329,6 +331,99 @@ export default function CourseSelection({ cohort, employeeId, name, department }
     }
   }
 
+  const handleEdit = (selection) => {
+    setEditingId(selection.id)
+    setEditFormData({
+      courseCode: selection.courseCode,
+      courseName: selection.courseName,
+      category: selection.category,
+      semester: selection.semester,
+      priority: selection.priority
+    })
+  }
+
+  const handleCancelEdit = () => {
+    setEditingId(null)
+    setEditFormData({})
+  }
+
+  const handleUpdateSubmit = async (id) => {
+    try {
+      const response = await fetch(`https://cohort-backend-production.up.railway.app/api/faculty/update/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(editFormData)
+      })
+
+      if (response.ok) {
+        const updated = await response.json()
+        setExistingSelections(prev =>
+          prev.map(sel => sel.id === id ? updated : sel)
+        )
+        setEditingId(null)
+        setEditFormData({})
+        alert('✅ Course updated successfully!')
+      } else {
+        alert('❌ Error updating course')
+      }
+    } catch (err) {
+      alert('❌ Error connecting to backend')
+      console.error(err)
+    }
+  }
+
+  const handleDelete = async (id) => {
+    if (!confirm('Are you sure you want to delete this course selection?')) {
+      return
+    }
+
+    try {
+      const response = await fetch(`https://cohort-backend-production.up.railway.app/api/faculty/delete/${id}`, {
+        method: 'DELETE'
+      })
+
+      if (response.ok) {
+        setExistingSelections(prev => prev.filter(sel => sel.id !== id))
+        alert('✅ Course deleted successfully!')
+        
+        // If no more selections, reset the view
+        if (existingSelections.length === 1) {
+          setAlreadySubmitted(false)
+        }
+      } else {
+        alert('❌ Error deleting course')
+      }
+    } catch (err) {
+      alert('❌ Error connecting to backend')
+      console.error(err)
+    }
+  }
+
+  const handleDeleteAll = async () => {
+    if (!confirm(`Are you sure you want to delete ALL ${existingSelections.length} course selections for this faculty member? This action cannot be undone.`)) {
+      return
+    }
+
+    try {
+      const response = await fetch(`https://cohort-backend-production.up.railway.app/api/faculty/delete-all/${employeeId}`, {
+        method: 'DELETE'
+      })
+
+      if (response.ok) {
+        setExistingSelections([])
+        setAlreadySubmitted(false)
+        alert('✅ All course selections deleted successfully!')
+      } else {
+        alert('❌ Error deleting courses')
+      }
+    } catch (err) {
+      alert('❌ Error connecting to backend')
+      console.error(err)
+    }
+  }
+
   if (loading) {
     return (
       <div className="course-selection">
@@ -382,25 +477,124 @@ export default function CourseSelection({ cohort, employeeId, name, department }
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
           </svg>
-          <p>You have already submitted your course selections. Contact the administrator if you need to make changes.</p>
+          <p>
+            {isAdminView 
+              ? "Admin View: You can edit or delete course selections below." 
+              : "You have already submitted your course selections. Contact the administrator if you need to make changes."}
+          </p>
         </div>
+
+        {isAdminView && (
+          <div className="course-selection__admin-actions">
+            <button 
+              onClick={handleDeleteAll} 
+              className="course-selection__delete-all-btn"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+              </svg>
+              Delete All Selections
+            </button>
+          </div>
+        )}
 
         <div className="course-selection__submitted-list">
           {existingSelections.map((selection, index) => (
             <div key={index} className="submitted-course-card">
-              <div className="submitted-course-card__header">
-                <span className="submitted-course-card__code">{selection.courseCode}</span>
-                <span className={`submitted-course-card__priority priority--${selection.priority?.toLowerCase().replace(/ /g, '-')}`}>
-                  {selection.priority}
-                </span>
-              </div>
-              <h4 className="submitted-course-card__title">{selection.courseName}</h4>
-              <div className="submitted-course-card__details">
-                <span className="submitted-course-card__badge">{selection.category}</span>
-                <span className={`submitted-course-card__sem submitted-course-card__sem--${selection.semester?.toLowerCase()}`}>
-                  {selection.semester} Semester
-                </span>
-              </div>
+              {editingId === selection.id ? (
+                <div className="submitted-course-card__edit-form">
+                  <div className="edit-form__group">
+                    <label>Course Code:</label>
+                    <input 
+                      type="text" 
+                      value={editFormData.courseCode} 
+                      onChange={(e) => setEditFormData({...editFormData, courseCode: e.target.value})}
+                      className="edit-form__input"
+                    />
+                  </div>
+                  <div className="edit-form__group">
+                    <label>Course Name:</label>
+                    <input 
+                      type="text" 
+                      value={editFormData.courseName} 
+                      onChange={(e) => setEditFormData({...editFormData, courseName: e.target.value})}
+                      className="edit-form__input"
+                    />
+                  </div>
+                  <div className="edit-form__group">
+                    <label>Category:</label>
+                    <input 
+                      type="text" 
+                      value={editFormData.category} 
+                      onChange={(e) => setEditFormData({...editFormData, category: e.target.value})}
+                      className="edit-form__input"
+                    />
+                  </div>
+                  <div className="edit-form__group">
+                    <label>Semester:</label>
+                    <select 
+                      value={editFormData.semester} 
+                      onChange={(e) => setEditFormData({...editFormData, semester: e.target.value})}
+                      className="edit-form__select"
+                    >
+                      <option value="ODD">ODD</option>
+                      <option value="EVEN">EVEN</option>
+                    </select>
+                  </div>
+                  <div className="edit-form__group">
+                    <label>Priority:</label>
+                    <select 
+                      value={editFormData.priority} 
+                      onChange={(e) => setEditFormData({...editFormData, priority: e.target.value})}
+                      className="edit-form__select"
+                    >
+                      <option value="Option 1 [High]">Option 1 [High]</option>
+                      <option value="Option 2 [Medium]">Option 2 [Medium]</option>
+                      <option value="Option 3 [Low]">Option 3 [Low]</option>
+                    </select>
+                  </div>
+                  <div className="edit-form__actions">
+                    <button onClick={() => handleUpdateSubmit(selection.id)} className="edit-form__save-btn">
+                      Save
+                    </button>
+                    <button onClick={handleCancelEdit} className="edit-form__cancel-btn">
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="submitted-course-card__header">
+                    <span className="submitted-course-card__code">{selection.courseCode}</span>
+                    <span className={`submitted-course-card__priority priority--${selection.priority?.toLowerCase().replace(/ /g, '-')}`}>
+                      {selection.priority}
+                    </span>
+                  </div>
+                  <h4 className="submitted-course-card__title">{selection.courseName}</h4>
+                  <div className="submitted-course-card__details">
+                    <span className="submitted-course-card__badge">{selection.category}</span>
+                    <span className={`submitted-course-card__sem submitted-course-card__sem--${selection.semester?.toLowerCase()}`}>
+                      {selection.semester} Semester
+                    </span>
+                  </div>
+                  {isAdminView && (
+                    <div className="submitted-course-card__actions">
+                      <button onClick={() => handleEdit(selection)} className="submitted-course-card__edit-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                        </svg>
+                        Edit
+                      </button>
+                      <button onClick={() => handleDelete(selection.id)} className="submitted-course-card__delete-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                          <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                        </svg>
+                        Delete
+                      </button>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           ))}
         </div>
