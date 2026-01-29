@@ -19,15 +19,6 @@ function App() {
         localStorage.removeItem('facultyPortalUser')
       }
     }
-    // Logout on tab close
-    const handleTabClose = () => {
-      setUser(null)
-      localStorage.removeItem('facultyPortalUser')
-    }
-    window.addEventListener('beforeunload', handleTabClose)
-    return () => {
-      window.removeEventListener('beforeunload', handleTabClose)
-    }
   }, [])
 
   const handleLogin = (userData) => {
