@@ -123,23 +123,38 @@ export default function CourseSelection({ cohort, employeeId }) {
   }
 
   const handleSubmit = () => {
-    // Validation: Check if at least one course has "Option 1" priority
-    const option1Courses = selectedCourses.filter(
-      courseCode => coursePriorities[courseCode] === 'Option 1'
-    )
-    
-    if (option1Courses.length === 0) {
-      alert('⚠️ Please select at least ONE course with Option 1 before submitting.')
-      return
-    }
+    // Get total available courses for this cohort
+    const allAvailableCourses = Object.values(courses).flat().map(c => c.courseCode)
+    const totalAvailable = allAvailableCourses.length
 
     // Validation: Check if all selected courses have priorities assigned
     const coursesWithoutPriority = selectedCourses.filter(
       courseCode => !coursePriorities[courseCode]
     )
-    
     if (coursesWithoutPriority.length > 0) {
       alert('⚠️ Please assign priority (Option 1/Option 2/Option 3) to all selected courses.')
+      return
+    }
+
+    // Validation: Must select at least 3 courses, or all if less than 3 available
+    if (totalAvailable >= 3) {
+      if (selectedCourses.length < 3) {
+        alert('⚠️ Please select at least 3 courses from your cohort.')
+        return
+      }
+    } else {
+      if (selectedCourses.length < totalAvailable) {
+        alert(`⚠️ Please select all available courses for your cohort (only ${totalAvailable} available).`)
+        return
+      }
+    }
+
+    // Validation: At least one Option 1 priority
+    const option1Courses = selectedCourses.filter(
+      courseCode => coursePriorities[courseCode] === 'Option 1'
+    )
+    if (option1Courses.length === 0) {
+      alert('⚠️ Please select at least ONE course with Option 1 before submitting.')
       return
     }
 
