@@ -1,3 +1,18 @@
+.course-selection__year-heading {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #880000;
+  margin-bottom: 1.2rem;
+  letter-spacing: 0.3px;
+  text-align: left;
+}
+.course-selection__year {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #880000;
+  margin-bottom: 0.3rem;
+  letter-spacing: 0.2px;
+}
 .course-selection {
   margin-top: 2rem;
 }
@@ -218,9 +233,9 @@
 
 /* Distinct styles for ODD and EVEN semester labels */
 .course-item__sem--odd {
-  background: #fff4e0;
-  color: #d35400;
-  border: 1.5px solid #ffa726;
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1.5px solid #66bb6a;
 }
 .course-item__sem--even {
   background: #e3f2fd;

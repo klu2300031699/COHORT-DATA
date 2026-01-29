@@ -200,18 +200,28 @@ export default function CourseSelection({ cohort, employeeId }) {
   if (error) {
     return (
       <div className="course-selection">
-        <div className="course-selection__error">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-          </svg>
-          <p>{error}</p>
+        <div className="course-selection__year-heading">
+          AY: 2026-27 (ODD & EVEN SEMESTER COURSES)
         </div>
+        <div className="course-selection__header">
+          <h3 className="course-selection__title">
+            Available Courses for Cohort <span className="faculty-card__value faculty-card__cohort">{cohort}</span>
+          </h3>
+          <div className="course-selection__counter">
+            <span className="course-selection__count">{selectedCourses.length}</span>
+            <span className="course-selection__count-label">Selected</span>
+          </div>
+        </div>
+        <div className="course-selection__error">{error}</div>
       </div>
     )
   }
 
   return (
     <div className="course-selection">
+      <div className="course-selection__year-heading">
+        AY: 2026-27 (ODD & EVEN SEMESTER COURSES)
+      </div>
       <div className="course-selection__header">
         <h3 className="course-selection__title">
           Available Courses for Cohort <span className="course-selection__cohort-badge">{cohort}</span>
@@ -220,6 +230,7 @@ export default function CourseSelection({ cohort, employeeId }) {
           <span className="course-selection__count">{selectedCourses.length}</span>
           <span className="course-selection__count-label">Selected</span>
         </div>
+
       </div>
 
       <div className="course-selection__categories">
