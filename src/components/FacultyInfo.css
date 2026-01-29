@@ -1,133 +1,154 @@
-.faculty-info {
-  background: linear-gradient(135deg, #880000 0%, #6d0000 100%);
-  border-radius: 12px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 4px 16px rgba(136, 0, 0, 0.15);
-}
 
-.faculty-info__header {
+/* FACULTY CARD - Professional Modern Style */
+.faculty-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(136, 0, 0, 0.10);
+  padding: 2.5rem 2rem 2rem 2rem;
+  margin-bottom: 2.5rem;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 1.5rem;
+  border: 1.5px solid #f0eaea;
+}
+
+.faculty-card__header {
+  display: flex;
   align-items: center;
-  margin-bottom: 1.5rem;
+  gap: 2rem;
+  margin-bottom: 0.5rem;
+  position: relative;
 }
 
-.faculty-info__title {
-  color: white;
-  font-size: 1.5rem;
+.faculty-card__avatar {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff6f6;
+  border-radius: 50%;
+  border: 2.5px solid #880000;
+  box-shadow: 0 2px 8px rgba(136,0,0,0.08);
+}
+
+.faculty-card__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.faculty-card__name {
+  font-size: 1.35rem;
   font-weight: 700;
-  margin: 0;
+  color: #880000;
+  margin-bottom: 0.1rem;
+  letter-spacing: 0.2px;
 }
 
-.faculty-info__reset-btn {
-  background: white;
+.faculty-card__id {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+  margin-top: 0.1rem;
+}
+.faculty-card__id span {
+  color: #222;
+  font-weight: 700;
+}
+
+.faculty-card__back-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: #fff;
   color: #880000;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 0.9rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(136,0,0,0.06);
+  border: 1.5px solid #f0eaea;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.faculty-card__back-btn:hover {
+  background: #fff0f0;
+  box-shadow: 0 4px 16px rgba(136,0,0,0.10);
 }
 
-.faculty-info__reset-btn svg {
-  width: 20px;
-  height: 20px;
-}
-
-.faculty-info__reset-btn:hover {
-  background: #f5f5f5;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.faculty-info__grid {
+.faculty-card__details {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 0.5rem;
 }
 
-.faculty-info__item {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 1rem;
-  border-radius: 8px;
+.faculty-card__detail {
+  background: #fff6f6;
+  border-radius: 10px;
+  padding: 1.1rem 1.2rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.2s;
+  gap: 0.4rem;
+  border: 1.2px solid #f0eaea;
+  min-width: 0;
 }
 
-.faculty-info__item:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-2px);
-}
-
-.faculty-info__label {
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 0.85rem;
-  font-weight: 500;
+.faculty-card__label {
+  color: #880000;
+  font-size: 0.95rem;
+  font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.1rem;
+}
+
+.faculty-card__value {
+  color: #222;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+.faculty-card__cohort {
+  color: #ffd700;
+  font-size: 1.18rem;
+  font-weight: 800;
   letter-spacing: 0.5px;
 }
 
-.faculty-info__value {
-  color: white;
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-.faculty-info__cohort {
-  color: #ffd700;
-  font-size: 1.3rem;
-  font-weight: 700;
-}
-
-/* Responsive styles */
-@media (max-width: 768px) {
-  .faculty-info {
-    padding: 1.5rem;
+@media (max-width: 900px) {
+  .faculty-card {
+    padding: 1.5rem 0.7rem 1.2rem 0.7rem;
   }
-  
-  .faculty-info__header {
-    flex-direction: column;
+  .faculty-card__header {
     gap: 1rem;
+  }
+  .faculty-card__details {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .faculty-card {
+    padding: 1rem 0.2rem 1rem 0.2rem;
+  }
+  .faculty-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+  }
+  .faculty-card__main {
     align-items: flex-start;
   }
-  
-  .faculty-info__title {
-    font-size: 1.25rem;
-  }
-  
-  .faculty-info__reset-btn {
-    width: 100%;
-    justify-content: center;
-  }
-  
-  .faculty-info__grid {
+  .faculty-card__details {
     grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 480px) {
-  .faculty-info {
-    padding: 1.25rem;
-  }
-  
-  .faculty-info__title {
-    font-size: 1.1rem;
-  }
-  
-  .faculty-info__value {
-    font-size: 1rem;
-  }
-  
-  .faculty-info__cohort {
-    font-size: 1.15rem;
+    gap: 0.7rem;
   }
 }
