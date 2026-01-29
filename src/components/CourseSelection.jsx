@@ -247,7 +247,7 @@ export default function CourseSelection({ cohort, employeeId }) {
                   <div className="course-item__content">
                     <div className="course-item__header">
                       <span className="course-item__code">{course.courseCode}</span>
-                      <span className="course-item__sem">{course.sem}</span>
+                      <span className={`course-item__sem course-item__sem--${course.sem?.toLowerCase() === 'odd' ? 'odd' : course.sem?.toLowerCase() === 'even' ? 'even' : 'other'}`}>{course.sem}</span>
                     </div>
                     <p className="course-item__title">{course.courseTitle}</p>
                     

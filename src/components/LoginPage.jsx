@@ -91,11 +91,11 @@ export default function LoginPage({ onLogin }) {
       {/* Main Content */}
       <div className="login-page__content">
         <div className="login-page__card">
-          <h1 className="login-page__heading">Welcome to CSE-4</h1>
+          <h1 className="login-page__heading">Welcome to KLU</h1>
           <h2 className="login-page__subheading">Faculty Option Portal</h2>
           <p className="login-page__description">
             Enables faculty members to select courses they intend to teach for the upcoming semester.
-Helps the department plan teaching assignments efficiently.
+Helps the university plan teaching assignments efficiently.
 Ensures accurate course allocation and workload distribution.
           </p>
           <button className="login-page__btn" onClick={handleLoginClick}>

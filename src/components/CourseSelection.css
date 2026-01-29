@@ -204,6 +204,7 @@
   font-size: 1rem;
 }
 
+
 .course-item__sem {
   background: #e9ecef;
   color: #495057;
@@ -212,6 +213,24 @@
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
+  margin-left: 0.5rem;
+}
+
+/* Distinct styles for ODD and EVEN semester labels */
+.course-item__sem--odd {
+  background: #fff4e0;
+  color: #d35400;
+  border: 1.5px solid #ffa726;
+}
+.course-item__sem--even {
+  background: #e3f2fd;
+  color: #1565c0;
+  border: 1.5px solid #42a5f5;
+}
+.course-item__sem--other {
+  background: #f3e5f5;
+  color: #6a1b9a;
+  border: 1.5px solid #ba68c8;
 }
 
 .course-item__title {
