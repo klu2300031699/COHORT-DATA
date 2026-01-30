@@ -498,105 +498,137 @@ export default function CourseSelection({ cohort, employeeId, name, department, 
           </div>
         )}
 
-        <div className="course-selection__submitted-list">
-          {existingSelections.map((selection, index) => (
-            <div key={index} className="submitted-course-card">
-              {editingId === selection.id ? (
-                <div className="submitted-course-card__edit-form">
-                  <div className="edit-form__group">
-                    <label>Course Code:</label>
-                    <input 
-                      type="text" 
-                      value={editFormData.courseCode} 
-                      onChange={(e) => setEditFormData({...editFormData, courseCode: e.target.value})}
-                      className="edit-form__input"
-                    />
-                  </div>
-                  <div className="edit-form__group">
-                    <label>Course Name:</label>
-                    <input 
-                      type="text" 
-                      value={editFormData.courseName} 
-                      onChange={(e) => setEditFormData({...editFormData, courseName: e.target.value})}
-                      className="edit-form__input"
-                    />
-                  </div>
-                  <div className="edit-form__group">
-                    <label>Category:</label>
-                    <input 
-                      type="text" 
-                      value={editFormData.category} 
-                      onChange={(e) => setEditFormData({...editFormData, category: e.target.value})}
-                      className="edit-form__input"
-                    />
-                  </div>
-                  <div className="edit-form__group">
-                    <label>Semester:</label>
-                    <select 
-                      value={editFormData.semester} 
-                      onChange={(e) => setEditFormData({...editFormData, semester: e.target.value})}
-                      className="edit-form__select"
-                    >
-                      <option value="ODD">ODD</option>
-                      <option value="EVEN">EVEN</option>
-                    </select>
-                  </div>
-                  <div className="edit-form__group">
-                    <label>Priority:</label>
-                    <select 
-                      value={editFormData.priority} 
-                      onChange={(e) => setEditFormData({...editFormData, priority: e.target.value})}
-                      className="edit-form__select"
-                    >
-                      <option value="Option 1 [High]">Option 1 [High]</option>
-                      <option value="Option 2 [Medium]">Option 2 [Medium]</option>
-                      <option value="Option 3 [Low]">Option 3 [Low]</option>
-                    </select>
-                  </div>
-                  <div className="edit-form__actions">
-                    <button onClick={() => handleUpdateSubmit(selection.id)} className="edit-form__save-btn">
-                      Save
-                    </button>
-                    <button onClick={handleCancelEdit} className="edit-form__cancel-btn">
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <div className="submitted-course-card__header">
-                    <span className="submitted-course-card__code">{selection.courseCode}</span>
-                    <span className={`submitted-course-card__priority priority--${selection.priority?.toLowerCase().replace(/ /g, '-')}`}>
-                      {selection.priority}
-                    </span>
-                  </div>
-                  <h4 className="submitted-course-card__title">{selection.courseName}</h4>
-                  <div className="submitted-course-card__details">
-                    <span className="submitted-course-card__badge">{selection.category}</span>
-                    <span className={`submitted-course-card__sem submitted-course-card__sem--${selection.semester?.toLowerCase()}`}>
-                      {selection.semester} Semester
-                    </span>
-                  </div>
-                  {isAdminView && (
-                    <div className="submitted-course-card__actions">
-                      <button onClick={() => handleEdit(selection)} className="submitted-course-card__edit-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-                          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-                        </svg>
-                        Edit
-                      </button>
-                      <button onClick={() => handleDelete(selection.id)} className="submitted-course-card__delete-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-                          <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-                        </svg>
-                        Delete
-                      </button>
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          ))}
+        <div className="submitted-courses-table-wrapper">
+          <table className="submitted-courses-table">
+            <thead>
+              <tr>
+                <th className="table-header table-header--sno">#</th>
+                <th className="table-header table-header--code">Course Code</th>
+                <th className="table-header table-header--name">Course Name</th>
+                <th className="table-header table-header--category">Category</th>
+                <th className="table-header table-header--semester">Semester</th>
+                <th className="table-header table-header--priority">Priority</th>
+                {isAdminView && <th className="table-header table-header--actions">Actions</th>}
+              </tr>
+            </thead>
+            <tbody>
+              {existingSelections.map((selection, index) => (
+                editingId === selection.id ? (
+                  <tr key={index} className="table-row table-row--editing">
+                    <td colSpan={isAdminView ? 7 : 6} className="table-cell--editing">
+                      <div className="edit-form">
+                        <div className="edit-form__row">
+                          <div className="edit-form__group">
+                            <label>Course Code</label>
+                            <input 
+                              type="text" 
+                              value={editFormData.courseCode} 
+                              onChange={(e) => setEditFormData({...editFormData, courseCode: e.target.value})}
+                              className="edit-form__input"
+                            />
+                          </div>
+                          <div className="edit-form__group edit-form__group--wide">
+                            <label>Course Name</label>
+                            <input 
+                              type="text" 
+                              value={editFormData.courseName} 
+                              onChange={(e) => setEditFormData({...editFormData, courseName: e.target.value})}
+                              className="edit-form__input"
+                            />
+                          </div>
+                          <div className="edit-form__group">
+                            <label>Category</label>
+                            <input 
+                              type="text" 
+                              value={editFormData.category} 
+                              onChange={(e) => setEditFormData({...editFormData, category: e.target.value})}
+                              className="edit-form__input"
+                            />
+                          </div>
+                        </div>
+                        <div className="edit-form__row">
+                          <div className="edit-form__group">
+                            <label>Semester</label>
+                            <select 
+                              value={editFormData.semester} 
+                              onChange={(e) => setEditFormData({...editFormData, semester: e.target.value})}
+                              className="edit-form__select"
+                            >
+                              <option value="ODD">ODD</option>
+                              <option value="EVEN">EVEN</option>
+                            </select>
+                          </div>
+                          <div className="edit-form__group">
+                            <label>Priority</label>
+                            <select 
+                              value={editFormData.priority} 
+                              onChange={(e) => setEditFormData({...editFormData, priority: e.target.value})}
+                              className="edit-form__select"
+                            >
+                              <option value="Option 1 [High]">Option 1 [High]</option>
+                              <option value="Option 2 [Medium]">Option 2 [Medium]</option>
+                              <option value="Option 3 [Low]">Option 3 [Low]</option>
+                            </select>
+                          </div>
+                          <div className="edit-form__actions">
+                            <button onClick={() => handleUpdateSubmit(selection.id)} className="edit-form__save-btn">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                              </svg>
+                              Save
+                            </button>
+                            <button onClick={handleCancelEdit} className="edit-form__cancel-btn">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                              </svg>
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  <tr key={index} className="table-row">
+                    <td className="table-cell table-cell--sno">{index + 1}</td>
+                    <td className="table-cell table-cell--code">
+                      <span className="course-code-badge">{selection.courseCode}</span>
+                    </td>
+                    <td className="table-cell table-cell--name">{selection.courseName}</td>
+                    <td className="table-cell table-cell--category">
+                      <span className="category-badge">{selection.category}</span>
+                    </td>
+                    <td className="table-cell table-cell--semester">
+                      <span className={`semester-badge semester-badge--${selection.semester?.toLowerCase()}`}>
+                        {selection.semester}
+                      </span>
+                    </td>
+                    <td className="table-cell table-cell--priority">
+                      <span className={`priority-badge priority-badge--${selection.priority?.toLowerCase().includes('high') ? 'high' : selection.priority?.toLowerCase().includes('medium') ? 'medium' : 'low'}`}>
+                        {selection.priority}
+                      </span>
+                    </td>
+                    {isAdminView && (
+                      <td className="table-cell table-cell--actions">
+                        <div className="table-actions">
+                          <button onClick={() => handleEdit(selection)} className="table-action-btn table-action-btn--edit" title="Edit">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                              <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                            </svg>
+                          </button>
+                          <button onClick={() => handleDelete(selection.id)} className="table-action-btn table-action-btn--delete" title="Delete">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                            </svg>
+                          </button>
+                        </div>
+                      </td>
+                    )}
+                  </tr>
+                )
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     )
