@@ -42,7 +42,7 @@ export default function LoginPage({ onLogin }) {
           authenticated = true
           
           // Check if admin
-          const isAdmin = ['Gnanesh', '4868', '1277'].includes(id.trim())
+          const isAdmin = ['Gnanesh', '4868', '1277','8068'].includes(id.trim())
           
           onLogin({
             id: id.trim(),
