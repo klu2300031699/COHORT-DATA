@@ -1,7 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Header.css'
+import CustomAlert from './CustomAlert'
 
 export default function Header({ user, onLogout }) {
+  const [alertConfig, setAlertConfig] = useState({ show: false, type: 'info', title: '', message: '' })
+
+  const showAlert = (type, title, message) => {
+    setAlertConfig({ show: true, type, title, message })
+  }
+
+  const closeAlert = () => {
+    setAlertConfig({ show: false, type: 'info', title: '', message: '' })
+  }
+
   const handleExportReport = async () => {
     try {
       const response = await fetch('https://cohort-backend-production.up.railway.app/api/faculty/all')
@@ -12,7 +23,7 @@ export default function Header({ user, onLogout }) {
       const data = await response.json()
       
       if (data.length === 0) {
-        alert('No data available to export')
+        showAlert('warning', 'No Data', 'No data available to export')
         return
       }
       
@@ -48,10 +59,10 @@ export default function Header({ user, onLogout }) {
       link.click()
       document.body.removeChild(link)
       
-      alert(`✅ Successfully exported ${data.length} records!`)
+      showAlert('success', 'Export Successful', `Successfully exported ${data.length} records!`)
     } catch (error) {
       console.error('Error exporting data:', error)
-      alert('❌ Error exporting data. Please try again.')
+      showAlert('error', 'Export Failed', 'Error exporting data. Please try again.')
     }
   }
 
@@ -94,6 +105,14 @@ export default function Header({ user, onLogout }) {
           </>
         )}
       </div>
+
+      <CustomAlert
+        show={alertConfig.show}
+        type={alertConfig.type}
+        title={alertConfig.title}
+        message={alertConfig.message}
+        onClose={closeAlert}
+      />
     </header>
   )
 }

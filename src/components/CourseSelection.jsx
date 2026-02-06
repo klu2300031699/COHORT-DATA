@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import './CourseSelection.css'
 import './SubmittedCourses.css'
+import CustomAlert from './CustomAlert'
+import CustomConfirm from './CustomConfirm'
 
 export default function CourseSelection({ cohort, employeeId, name, department, isAdminView = false }) {
   const [courses, setCourses] = useState({})
@@ -14,6 +16,31 @@ export default function CourseSelection({ cohort, employeeId, name, department, 
   const [existingSelections, setExistingSelections] = useState([])
   const [editingId, setEditingId] = useState(null)
   const [editFormData, setEditFormData] = useState({})
+  const [alertConfig, setAlertConfig] = useState({ show: false, type: 'info', title: '', message: '' })
+  const [confirmConfig, setConfirmConfig] = useState({ show: false, title: '', message: '', onConfirm: null })
+
+  const showAlert = (type, title, message) => {
+    setAlertConfig({ show: true, type, title, message })
+  }
+
+  const closeAlert = () => {
+    setAlertConfig({ show: false, type: 'info', title: '', message: '' })
+  }
+
+  const showConfirm = (title, message, onConfirm) => {
+    setConfirmConfig({ show: true, title, message, onConfirm })
+  }
+
+  const closeConfirm = () => {
+    setConfirmConfig({ show: false, title: '', message: '', onConfirm: null })
+  }
+
+  const handleConfirm = () => {
+    if (confirmConfig.onConfirm) {
+      confirmConfig.onConfirm()
+    }
+    closeConfirm()
+  }
 
   useEffect(() => {
     loadCourses()
@@ -185,7 +212,7 @@ export default function CourseSelection({ cohort, employeeId, name, department, 
       courseCode => !coursePriorities[courseCode]
     )
     if (coursesWithoutPriority.length > 0) {
-      alert('⚠️ Please assign priority (Option 1/Option 2/Option 3) to all selected courses.')
+      showAlert('warning', 'Missing Priority', 'Please assign priority (Option 1/Option 2/Option 3) to all selected courses.')
       return
     }
 
@@ -224,7 +251,7 @@ export default function CourseSelection({ cohort, employeeId, name, department, 
     if (totalCourses < 3) {
       // Must select all courses
       if (selectedCourses.length < totalCourses) {
-        alert(`⚠️ This cohort has less than 3 courses. Please select all ${totalCourses} available courses.`)
+        showAlert('warning', 'Selection Required', `This cohort has less than 3 courses. Please select all ${totalCourses} available courses.`)
         return
       }
     } else {
@@ -235,7 +262,7 @@ export default function CourseSelection({ cohort, employeeId, name, department, 
           oddCategories[category].some(c => c.courseCode === code)
         )
         if (selectedFromCategory.length === 0) {
-          alert(`⚠️ Please select at least 1 course from category "${category}" in ODD semester.`)
+          showAlert('warning', 'Category Selection Required', `Please select at least 1 course from category "${category}" in ODD semester.`)
           return
         }
       }
@@ -246,7 +273,7 @@ export default function CourseSelection({ cohort, employeeId, name, department, 
           evenCategories[category].some(c => c.courseCode === code)
         )
         if (selectedFromCategory.length === 0) {
-          alert(`⚠️ Please select at least 1 course from category "${category}" in EVEN semester.`)
+          showAlert('warning', 'Category Selection Required', `Please select at least 1 course from category "${category}" in EVEN semester.`)
           return
         }
       }
@@ -257,7 +284,7 @@ export default function CourseSelection({ cohort, employeeId, name, department, 
       courseCode => coursePriorities[courseCode]?.includes('Option 1')
     )
     if (option1OddCourses.length === 0) {
-      alert('⚠️ Please select at least ONE course with Option 1 [High] priority from ODD semester.')
+      showAlert('warning', 'High Priority Required', 'Please select at least ONE course with Option 1 [High] priority from ODD semester.')
       return
     }
 
@@ -266,7 +293,7 @@ export default function CourseSelection({ cohort, employeeId, name, department, 
       courseCode => coursePriorities[courseCode]?.includes('Option 1')
     )
     if (option1EvenCourses.length === 0) {
-      alert('⚠️ Please select at least ONE course with Option 1 [High] priority from EVEN semester.')
+      showAlert('warning', 'High Priority Required', 'Please select at least ONE course with Option 1 [High] priority from EVEN semester.')
       return
     }
 
@@ -308,7 +335,8 @@ export default function CourseSelection({ cohort, employeeId, name, department, 
         const option2Count = selectedCourses.filter(c => coursePriorities[c]?.includes('Option 2')).length
         const option3Count = selectedCourses.filter(c => coursePriorities[c]?.includes('Option 3')).length
 
-        alert(`✅ Successfully submitted ${selectedCourses.length} course(s) to database!\n\n` +
+        showAlert('success', 'Submission Successful', 
+          `Successfully submitted ${selectedCourses.length} course(s) to database!\n\n` +
           `Employee ID: ${employeeId}\n` +
           `Name: ${name}\n` +
           `Cohort: ${cohort}\n\n` +
@@ -322,11 +350,11 @@ export default function CourseSelection({ cohort, employeeId, name, department, 
         setExistingSelections(result)
       } else {
         const errorText = await response.text()
-        alert('❌ Error submitting data: ' + errorText)
+        showAlert('error', 'Submission Failed', 'Error submitting data: ' + errorText)
         console.error('Submission error:', errorText)
       }
     } catch (err) {
-      alert('❌ Error connecting to backend. Please make sure the backend server is running.')
+      showAlert('error', 'Connection Error', 'Error connecting to backend. Please make sure the backend server is running.')
       console.error('Backend connection error:', err)
     }
   }
@@ -364,80 +392,101 @@ export default function CourseSelection({ cohort, employeeId, name, department, 
         )
         setEditingId(null)
         setEditFormData({})
-        alert('✅ Course updated successfully!')
+        showAlert('success', 'Update Successful', 'Course updated successfully!')
       } else {
-        alert('❌ Error updating course')
+        showAlert('error', 'Update Failed', 'Error updating course')
       }
     } catch (err) {
-      alert('❌ Error connecting to backend')
+      showAlert('error', 'Connection Error', 'Error connecting to backend')
       console.error(err)
     }
   }
 
   const handleDelete = async (id) => {
-    if (!confirm('Are you sure you want to delete this course selection?')) {
-      return
-    }
+    showConfirm(
+      'Confirm Deletion',
+      'Are you sure you want to delete this course selection?',
+      async () => {
+        try {
+          const response = await fetch(`https://cohort-backend-production.up.railway.app/api/faculty/delete/${id}`, {
+            method: 'DELETE'
+          })
 
-    try {
-      const response = await fetch(`https://cohort-backend-production.up.railway.app/api/faculty/delete/${id}`, {
-        method: 'DELETE'
-      })
-
-      if (response.ok) {
-        setExistingSelections(prev => prev.filter(sel => sel.id !== id))
-        alert('✅ Course deleted successfully!')
-        
-        // If no more selections, reset the view
-        if (existingSelections.length === 1) {
-          setAlreadySubmitted(false)
+          if (response.ok) {
+            setExistingSelections(prev => prev.filter(sel => sel.id !== id))
+            showAlert('success', 'Deletion Successful', 'Course deleted successfully!')
+            
+            // If no more selections, reset the view
+            if (existingSelections.length === 1) {
+              setAlreadySubmitted(false)
+            }
+          } else {
+            showAlert('error', 'Deletion Failed', 'Error deleting course')
+          }
+        } catch (err) {
+          showAlert('error', 'Connection Error', 'Error connecting to backend')
+          console.error(err)
         }
-      } else {
-        alert('❌ Error deleting course')
       }
-    } catch (err) {
-      alert('❌ Error connecting to backend')
-      console.error(err)
-    }
+    )
   }
 
   const handleDeleteAll = async () => {
-    if (!confirm(`Are you sure you want to delete ALL ${existingSelections.length} course selections for this faculty member? This action cannot be undone.`)) {
-      return
-    }
+    showConfirm(
+      'Confirm Delete All',
+      `Are you sure you want to delete ALL ${existingSelections.length} course selections for this faculty member? This action cannot be undone.`,
+      async () => {
+        try {
+          const response = await fetch(`https://cohort-backend-production.up.railway.app/api/faculty/delete-all/${employeeId}`, {
+            method: 'DELETE'
+          })
 
-    try {
-      const response = await fetch(`https://cohort-backend-production.up.railway.app/api/faculty/delete-all/${employeeId}`, {
-        method: 'DELETE'
-      })
-
-      if (response.ok) {
-        setExistingSelections([])
-        setAlreadySubmitted(false)
-        alert('✅ All course selections deleted successfully!')
-      } else {
-        alert('❌ Error deleting courses')
+          if (response.ok) {
+            setExistingSelections([])
+            setAlreadySubmitted(false)
+            showAlert('success', 'All Deleted', 'All course selections deleted successfully!')
+          } else {
+            showAlert('error', 'Deletion Failed', 'Error deleting courses')
+          }
+        } catch (err) {
+          showAlert('error', 'Connection Error', 'Error connecting to backend')
+          console.error(err)
+        }
       }
-    } catch (err) {
-      alert('❌ Error connecting to backend')
-      console.error(err)
-    }
+    )
   }
 
   if (loading) {
     return (
-      <div className="course-selection">
-        <div className="course-selection__loading">
-          <div className="course-selection__spinner"></div>
-          <p>Loading courses...</p>
+      <>
+        <div className="course-selection">
+          <div className="course-selection__loading">
+            <div className="course-selection__spinner"></div>
+            <p>Loading courses...</p>
+          </div>
         </div>
-      </div>
+        <CustomAlert
+          show={alertConfig.show}
+          type={alertConfig.type}
+          title={alertConfig.title}
+          message={alertConfig.message}
+          onClose={closeAlert}
+        />
+        <CustomConfirm
+          show={confirmConfig.show}
+          title={confirmConfig.title}
+          message={confirmConfig.message}
+          onConfirm={handleConfirm}
+          onCancel={closeConfirm}
+        />
+      </>
     )
   }
 
   if (error) {
     return (
-      <div className="course-selection">
+      <>
+        <div className="course-selection">
         <div className="course-selection__year-heading">
           AY: 2026-27 (ODD & EVEN SEMESTER COURSES)
         </div>
@@ -451,7 +500,22 @@ export default function CourseSelection({ cohort, employeeId, name, department, 
           </div>
         </div>
         <div className="course-selection__error">{error}</div>
+        <CustomAlert
+          show={alertConfig.show}
+          type={alertConfig.type}
+          title={alertConfig.title}
+          message={alertConfig.message}
+          onClose={closeAlert}
+        />
+        <CustomConfirm
+          show={confirmConfig.show}
+          title={confirmConfig.title}
+          message={confirmConfig.message}
+          onConfirm={handleConfirm}
+          onCancel={closeConfirm}
+        />
       </div>
+      </>
     )
   }
 
@@ -630,6 +694,20 @@ export default function CourseSelection({ cohort, employeeId, name, department, 
             </tbody>
           </table>
         </div>
+        <CustomAlert
+          show={alertConfig.show}
+          type={alertConfig.type}
+          title={alertConfig.title}
+          message={alertConfig.message}
+          onClose={closeAlert}
+        />
+        <CustomConfirm
+          show={confirmConfig.show}
+          title={confirmConfig.title}
+          message={confirmConfig.message}
+          onConfirm={handleConfirm}
+          onCancel={closeConfirm}
+        />
       </div>
     )
   }
@@ -770,6 +848,21 @@ export default function CourseSelection({ cohort, employeeId, name, department, 
           Submit Selection ({selectedCourses.length} courses)
         </button>
       </div>
+
+      <CustomAlert
+        show={alertConfig.show}
+        type={alertConfig.type}
+        title={alertConfig.title}
+        message={alertConfig.message}
+        onClose={closeAlert}
+      />
+      <CustomConfirm
+        show={confirmConfig.show}
+        title={confirmConfig.title}
+        message={confirmConfig.message}
+        onConfirm={handleConfirm}
+        onCancel={closeConfirm}
+      />
     </div>
   )
 }
