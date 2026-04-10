@@ -92,60 +92,49 @@ export default function CourseSelection({ cohort, employeeId, name, department, 
     setError('')
 
     try {
-      // Fetch both CSV files
-      const [y23Response, y24Response] = await Promise.all([
-        fetch('/Y23 Data.csv'),
-        fetch('/Y24 Data.csv')
-      ])
+      // Fetch the final data CSV file
+      const response = await fetch('/final data.csv')
+      const text = await response.text()
 
-      const [y23Text, y24Text] = await Promise.all([
-        y23Response.text(),
-        y24Response.text()
-      ])
-
-      // Parse and filter courses by cohort
+      // Parse and filter courses by cohort (include courses with COHORT matching faculty's cohort OR "ALL")
       const allCourses = []
 
       // Robust CSV parser for quoted fields with commas
-      const parseCSV = (text) => {
-        const lines = text.split('\n')
-        for (let i = 1; i < lines.length; i++) {
-          const line = lines[i].trim()
-          if (!line) continue
+      const lines = text.split('\n')
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].trim()
+        if (!line) continue
 
-          // Split CSV line respecting quoted fields
-          const columns = []
-          let current = ''
-          let inQuotes = false
-          for (let j = 0; j < line.length; j++) {
-            const char = line[j]
-            if (char === '"') {
-              inQuotes = !inQuotes
-            } else if (char === ',' && !inQuotes) {
-              columns.push(current)
-              current = ''
-            } else {
-              current += char
-            }
-          }
-          columns.push(current)
-
-          const courseCohort = columns[2]?.trim()
-          if (courseCohort === cohort) {
-            allCourses.push({
-              sNo: columns[0],
-              cat: columns[1],
-              cohort: columns[2],
-              courseCode: columns[3],
-              courseTitle: columns[4]?.replace(/^"|"$/g, ''),
-              sem: columns[5]?.replace(/^"|"$/g, '')
-            })
+        // Split CSV line respecting quoted fields
+        const columns = []
+        let current = ''
+        let inQuotes = false
+        for (let j = 0; j < line.length; j++) {
+          const char = line[j]
+          if (char === '"') {
+            inQuotes = !inQuotes
+          } else if (char === ',' && !inQuotes) {
+            columns.push(current)
+            current = ''
+          } else {
+            current += char
           }
         }
-      }
+        columns.push(current)
 
-      parseCSV(y23Text)
-      parseCSV(y24Text)
+        const courseCohort = columns[2]?.trim()
+        // Include courses that match the faculty's cohort OR courses marked as "ALL"
+        if (courseCohort === cohort || courseCohort === 'ALL') {
+          allCourses.push({
+            sNo: columns[0],
+            cat: columns[1],
+            cohort: columns[2],
+            courseCode: columns[3],
+            courseTitle: columns[4]?.replace(/^"|"$/g, ''),
+            sem: columns[5]?.replace(/^"|"$/g, '')
+          })
+        }
+      }
 
       if (allCourses.length === 0) {
         setError(`No courses found for cohort ${cohort}`)
