@@ -179,3 +179,158 @@ empid,name,designation,cohortno,cohortname,mobile
 9955,Mr. AKASH CHATTERJEE,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),7595998339
 9980,Mr. A.A.R. SENTHIL KUMAR,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),6281512110
 9984,Dr. A. PRAKASH,Professor,Cohort E09,Cyber Security & Block Chain Technology (CSBT),6385359970
+
+
+
+
+empid,name,designation,cohortno,cohortname,mobile
+8964,Dr. B. TIRAPATHI REDDY (HOD),Professor,Cohort E05,Cloud Computing (CCP),8099721265
+1379,Dr. K.V.DURGA KIRAN (Alt HoD),Professor,Cohort E27,"Software Engineering, MIS & DevOps (SEDP)",9985528099
+1498,Dr. P. V. VARA PRASAD (2nd Year Coordinator),Associate Professor,Cohort E16,Cross Platform Development Frameworks (CPDF),9949125842
+1834,Mr.M.VISHNUVARDHAN,Associate Professor,Cohort E05,Cloud Computing (CCP),9052897030
+2496,Dr.PEDDADA VENKATESWARA RAO,Associate Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),8309441700
+2843,Dr.B.VIJAYA BABU,Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9542499986
+3658,Dr.G.PRADEEPINI,Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9394860674
+3908,Dr. NICHENAMETLA RAJESH,Assistant Professor,Cohort E16,Cross Platform Development Frameworks (CPDF),9966645784
+4056,Mr.M.CHANDAN (3rd Year Coordinator),Assistant Professor,Cohort E07,E07,9491115961
+4821,Dr.DASARI RAMESH,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9866842249
+5372,Mr. SHAIKSHAVALI SHAIK,Assistant Professor,Cohort E27,"Software Engineering, MIS & DevOps (SEDP)",9989050455
+5422,Dr.MOTHUKURI RADHA (Counselling Incharge),Associate Professor,Cohort E06,Competitive Coding & Automata (CCA),9848659298
+5495,Dr. T. PRAVEEN,Professor,Cohort E16,Cross Platform Development Frameworks (CPDF),9963673214
+5659,Dr. PVVS SRINIVAS,Associate Professor,Cohort E02,Artificial Intelligence (AI),8179074445
+5886,Dr.KUNDA VENKATA PRASAD (4th Year Coordinator),Professor,Cohort E16,Cross Platform Development Frameworks (CPDF),9490432525
+5900,Dr.VIJAY KUMAR BURUGARI (Dep HoD - Placement),Professor,Cohort E05,Cloud Computing (CCP),7032599767
+5908,Dr.N RAGHAVENDRA SAI,Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9912128058
+6096,Mr.J.V.N.RAMESH,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9494835678
+6584,Mr. GARIGIPATI RAMA KRISHNA (Time Table Incharge),Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9959143643
+6616,Dr. DODDI SURESH KUMAR,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9989385139
+6619,Dr. S ARAVINTH SESHADRI,Associate Professor,Cohort E02,Artificial Intelligence (AI),9894448683
+6786,Dr. K SWATHI (Dep HoD - Students Affair),Professor,Cohort E02,Artificial Intelligence (AI),8885565288
+6874,Dr. YAMUNA DEVI,Associate Professor,Cohort E02,Artificial Intelligence (AI),7708847560
+6922,Dr. NESARANI,Associate Professor,Cohort E12,Embedded Systems & IoT (ESI),7904361101
+6924,Dr. SAI DURGA TEJASWI,Assistant Professor,Cohort E05,Cloud Computing (CCP),6281665687
+6931,Dr.VEERA ANKALU,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9959600958
+6932,Dr.RENUKA KOLANDASAMY,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9942096110
+6934,Ms. CH. SABITHA (Alumni Incharge),Assistant Professor,Cohort E27,"Software Engineering, MIS & DevOps (SEDP)",9985244644
+7004,Mr. CHITTIBABU RAVELA (Time Table Team),Assistant Professor,Cohort E16,Cross Platform Development Frameworks (CPDF),9492710461
+7152,Mr. B NAMA SIVAYAM,Assistant Professor,Cohort E05,Cloud Computing (CCP),8072276620
+7190,Dr. ELANGOVAN GURUVA REDDY (Dep HoD - Academics),Associate Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9841966509
+7239,Dr. KANDEPU BALA VENKATA BRAHMARAO,Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9490347043
+7255,Dr. T K RAMA KRISHNA RAO (Director CDOE),Professor,Cohort E05,Cloud Computing (CCP),9441073082
+7366,Mr. VUYYURU LAKSHMA REDDY,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9666186428
+7391,Dr. ARPIT JAIN,Professor,Cohort E02,Artificial Intelligence (AI),9411294039
+7401,Mr. RAJESH TULASI,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9441075108
+7414,Dr. ADAPA GOPI,Associate Professor,Cohort E05,Cloud Computing (CCP),8465924889
+7419,Dr. LEENA ARYA,Professor,Cohort E09,Cyber Security & Blockchain Technology (CSBT),9818385640
+7510,Mr. DAYANIDHI MOHAPATRA,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9861086508
+7792,Dr.NAGAMANI CHIPPADA (NSS & Library Incharge),Associate Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9493485523
+7814,Dr. K GURNADH GUPTA,Assistant Professor,Cohort E07,E07,7780264726
+7822,Dr. RAJESH BINGU,Assistant Professor,Cohort E05,Cloud Computing (CCP),9550674598
+7936,Ms. V PRASANTHI (Placement Team),Assistant Professor,Cohort E27,"Software Engineering, MIS & DevOps (SEDP)",8822488888
+7960,Dr. RAVEENDRA REDDY ENUMULA (LMS Incharge),Assistant Professor,Cohort E02,Artificial Intelligence (AI),9160233221
+7984,Mr. PANDIANATHAN MURUGESAN,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9952919469
+7985,Dr. MURALI KRISHNA PUTTAGUNTA (Time Table Incharge),Assistant Professor,Cohort E02,Artificial Intelligence (AI),9398455386
+7986,Mr. DINESH CHANDRA PANCHARIA,Assistant Professor,Cohort E07,E07,9502059318
+7999,Dr. V V JAYA RAMA KRISHNAIAH (Placement Prof Incharge),Associate Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9848220454
+8020,Dr. NATHA PRIYA,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),7816060883
+8021,Ms. DEEPTHI NATHA (Exam Section Team),Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9703266924
+8055,Mr. B ARUN KUMAR,Assistant Professor,Cohort E07,E07,8500722556
+8059,Ms. PUNYALA RAMADEVI,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),7993752406
+8080,Dr. KAVITHA SARIHADDU,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9652252797
+8084,Ms. ALUR PRANEETHA (Registration Team),Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9160981126
+8088,Dr. MOHD SHAMSH TABAREJ,Assistant Professor,Cohort E02,Artificial Intelligence (AI),9528258016
+8104,Dr. SATRUGHAN KUMAR,Associate Professor,Cohort E12,Embedded Systems & IoT (ESI),9893599980
+8110,Dr. ANUMULA SRUTHI (Registration Team),Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9492888150
+8120,Mr. S JAGAN MOHAN,Assistant Professor,Cohort E27,"Software Engineering, MIS & DevOps (SEDP)",9985589675
+8129,Dr. PENUBAKA BALAJI,Associate Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),8639344142
+8130,Mr. RUDRAMANI BHUTIA,Assistant Professor,Cohort E02,Artificial Intelligence (AI),7894278818
+8137,Dr. P V ANUSHA,Assistant Professor,Cohort E05,Cloud Computing (CCP),8297698956
+8146,Ms. POTHUMARTHI SRIDEVI (Time Table Team),Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),7702877718
+8147,Dr. KODALI SADHANA,Assistant Professor,Cohort E07,E07,9885536553
+8148,Ms. KADIYAM NASARAMMA,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9849750419
+8154,Mr. BANGARU BALAKRISHNA (ERP & Registration Incharge),Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),8121993937
+8163,Mr. LAVUDIYA NARASIMHA SWAMY,Assistant Professor,Cohort E02,Artificial Intelligence (AI),9032404380
+8164,Ms. GNANADEEPTHI BITRA,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9032640215
+8168,Ms. K ANJU ARAVIND,Assistant Professor,Cohort E16,Cross Platform Development Frameworks (CPDF),9566850994
+8171,Dr. S V SURESH BABU MATLA,Assistant Professor,Cohort E27,"Software Engineering, MIS & DevOps (SEDP)",8885999256
+8172,Dr. B ANNAPURNA (Code Chef Incharge),Professor,Cohort E07,E07,9440896722
+8175,Dr. MACHARLA SIVUDU,Assistant Professor,Cohort E17,Game Development & UX Design (GUX),9030790580
+8176,Mr. YENUGU SIVARAMAIAH,Assistant Professor,Cohort E12,Embedded Systems & IoT (ESI),8099999559
+8177,Dr. KATAKAM VENKATESWARA RAO (Exam Section Team),Assistant Professor,Cohort E05,Cloud Computing (CCP),9866003132
+8190,Ms. M TEJO LAKSHMI,Assistant Professor,Cohort E09,Cyber Security & Blockchain Technology (CSBT),9959619411
+8193,Ms. DASARI SAILAJA,Assistant Professor,Cohort E09,Cyber Security & Blockchain Technology (CSBT),8985010108
+8196,Dr. VENKATA RAO MADDUMALA,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9866514679
+8199,Mr. RAMBABU KALATHOTI,Assistant Professor,Cohort E02,Artificial Intelligence (AI),9490041462
+8200,Ms. KHADI LALITHA VANISREE,Assistant Professor,Cohort E16,Cross Platform Development Frameworks (CPDF),9398059351
+8282,Dr. UPPULURI LAKSHMI SOUNDHARYA,Assistant Professor,Cohort E02,Artificial Intelligence (AI),9494221893
+8296,Dr. VANKDOTH SRINIVASA RAO,Assistant Professor,Cohort E02,Artificial Intelligence (AI),9701705761
+8297,Dr. MALLADI RAVISANKAR (P&D Incharge),Professor,Cohort E02,Artificial Intelligence (AI),8985059527
+8323,Dr. BADUGU SAMATHA,Associate Professor,Cohort E07,E07,8333093453
+8335,Mr. PINAPATI LAKSHMANA RAO (Exam Section Team),Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9951310549
+8339,Dr. R S M LAKSHMI PATIBANDLA,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9849170637
+8353,Ms. DRAKSHAYANI SRIRAMSETTI,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9010212110
+8382,Ms. BANDI PRAMEELARANI,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9908618047
+8416,Dr. D PRAMODH KRISHNA,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9177186313
+8428,Dr. ADDANKI MOUNIKA,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),7207788171
+8435,Dr. MADABATTULA P J SANTOSH KUMAR,Associate Professor,Cohort E07,E07,9866001633
+8440,Dr. CHALLAPALLI JHANSI RANI (Counselling Incharge),Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9398534339
+8490,Mr. JITU GOPAIAH,Assistant Professor,Cohort E17,Game Development & UX Design (GUX),9885540703
+8533,Dr. P L KISHAN KUMAR REDDY,Professor,Cohort E05,Cloud Computing (CCP),9491458788
+8565,Dr. MOHAMMAD SHAHID,Associate Professor,Cohort E02,Artificial Intelligence (AI),9984448116
+8591,Mr. JEVIN J A (Time Table Team),Assistant Professor,Cohort E02,Artificial Intelligence (AI),9944419964
+8592,Dr. YELISELA RAJESH,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9440508454
+8635,Dr. P. PRAVEEN KUMAR (Prof Incharge Academics),Professor,Cohort E16,Cross Platform Development Frameworks (CPDF),9989769768
+8701,Mr.MOHAMMAD ASHIQUE AZAD,Assistant Professor,Cohort E02,Artificial Intelligence (AI),9333907225
+8707,Mr.ARAVIND NALAMOTHU (Counselling Incharge),Assistant Professor,Cohort E09,Cyber Security & Blockchain Technology (CSBT),7386460369
+8800,Mr. JONATHAN BATHULA,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9618680820
+8806,Dr. T CHITHRAKUMAR,Assistant Professor,Cohort E12,Embedded Systems & IoT (ESI),7200464709
+8814,Dr. P PRABAKARAN,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9842459808
+8818,Mr.FAIZAL NUJUMUDEEN,Assistant Professor,Cohort E09,Cyber Security & Blockchain Technology (CSBT),9895441543
+8820,Ms. BOBBA SAHITHI,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9059555031
+8823,Dr. MUPPIDI SOMA SUNDARA RAO,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9866586806
+8836,Ms. DUDIGAM RAMYA,Assistant Professor,Cohort E02,Artificial Intelligence (AI),9985644545
+8839,Dr. KILLI CHANDRA BHUSHANA RAO,Assistant Professor,Cohort E02,Artificial Intelligence (AI),9392829470
+8853,Mr. KRISHNA KISHORE THOTA,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9885406051
+8864,Mr. VADDE SUJAN BABU,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9052768133
+8873,Ms. TIRUMALASETTY SAI LAKSHMI (Registration Team),Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9912025065
+8874,Dr. TARAK HUSSAIN,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),7051071044
+8899,Dr. V. KRISHNA REDDY,Professor (FED Principal),Cohort E06,Competitive Coding & Automata (CCA),9848767561
+8905,Dr. K. ANU RADHA,Associate Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9971180222
+8906,Mr. SHAIK JILANI BASHA (Placement Team),Assistant Professor,Cohort E02,Artificial Intelligence (AI),9493358621
+8909,Dr. MANIKYA PRASUNA (Dep HOD - Faculty Affairs),Associate Professor,Cohort E02,Artificial Intelligence (AI),9963006777
+8913,Dr. G RAVIKANTH,Professor,Cohort E12,Embedded Systems & IoT (ESI),9849043488
+8916,Dr. V SIVARAMARAJU VETUKURI,Associate Professor,Cohort E06,Competitive Coding & Automata (CCA),9985342833
+8922,Ms. ELISABETH SUSAN DEVARAPALLI,Assistant Professor,Cohort E05,Cloud Computing (CCP),9043607938
+8969,Dr. SATHYAVANI ADDANKI,Assistant Professor,Cohort E27,"Software Engineering, MIS & DevOps (SEDP)",8106621020
+8978,Dr. KURAGANTI SANTHI (Exam Section Incharge),Associate Professor,Cohort E05,Cloud Computing (CCP),7013163044
+8979,Ms. BADIPATI SIVAGANGA,Assistant Professor,Cohort E05,Cloud Computing (CCP),7306868684
+8981,Dr. SAMPATHIRAO SUNEETHA (Time Table Team),Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),6305530166
+8995,Dr. AMIT KUMAR KAR,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),8480310920
+8996,Mr. SHIYAM V,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),8072543162
+8997,Dr. MAHESWARI BANDI (Time Table Team),Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9550785085
+9020,Dr. EDUPUGANTI MOUNIKA,Assistant Professor,Cohort E05,Cloud Computing (CCP),7981825215
+9028,Mr. VENKATA RAO JAVVAJI,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9154377090
+9033,Mr. VELCHURI BALAJI (Exam Section Team),Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9494924601
+9034,Mr. SANDEEP NANDA (Exam Section Team),Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9078395431
+9035,Mr. SINGARAJU SRINIVASULU,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9966103085
+9037,Ms. SHAIK SANHEERA,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),7095251254
+9038,Ms. C V K SIRISHA,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9100938143
+9101,Dr. M GEETHA,Associate Professor,Cohort E06,Competitive Coding & Automata (CCA),9944679755
+9131,Ms. SUROJU LEKHANA SRILAKSHMI (Exam Section Team),Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),7989739298
+9255,Ms. PRAVALLIKA K. (LMS Team),Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9505734664
+9377,Mr.NIMMAGADDA YASWANTH SAI (Placement Team),Assistant Professor,Cohort E02,Artificial Intelligence (AI),7780796805
+9391,Dr. T.SAILAJA,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),8885562220
+9413,Dr. CHAPPALA RAMADEVI,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9849477557
+9427,Mr.CHANDU DELHI POLICE,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9666324111
+9452,Dr. SUJITH ARIYAPADATH,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9447361292
+9484,Mrs. VENKATA MADHU BINDU,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9494511759
+9634,Mr. NALLAGORLA VIJAYA GOPAL,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9705608684
+9714,Mrs. Y V K D BHAVANI,Assistant Professor,Cohort E02,Artificial Intelligence (AI),9182476156
+9799,Mr. SUNIL PREM KUMAR PRATHIPATI,Assistant Professor,,,9849783090
+9828,Dr. R RANJIT KUMAR,Assistant Professor,,,8179386373
+9923,Mr. YENUMALA SANKARARAO,Assistant Professor,,,7780545814
+9953,Mr. YELLEPEDDI KRISHNA ASSISH,Assistant Professor,,,9133047087
+9960,Dr. SATYABRAT SAHOO,Assistant Professor,,,9853724248
+9968,Mr. POLU KIRAN KUMAR,Assistant Professor,,,7661025739
+9978,Dr. S BABU,Assistant Professor,,,8015678321
+
