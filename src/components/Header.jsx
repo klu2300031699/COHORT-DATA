@@ -28,7 +28,7 @@ export default function Header({ user, onLogout }) {
       }
       
       // Convert JSON to CSV
-      const headers = ['ID', 'Employee ID', 'Faculty Name', 'Cohort', 'Department', 'Course Code', 'Course Name', 'Category', 'Semester', 'Priority']
+      const headers = ['ID', 'Employee ID', 'Faculty Name', 'Cohort', 'Cohort Name', 'Course Code', 'Course Name', 'Category', 'Semester', 'Priority']
       const csvRows = [headers.join(',')]
       
       data.forEach(item => {
@@ -37,7 +37,7 @@ export default function Header({ user, onLogout }) {
           item.employeeId || '',
           `"${(item.facultyName || '').replace(/"/g, '""')}"`,
           item.cohort || '',
-          item.department || '',
+          item.cohortName || item.department || '',
           item.courseCode || '',
           `"${(item.courseName || '').replace(/"/g, '""')}"`,
           item.category || '',

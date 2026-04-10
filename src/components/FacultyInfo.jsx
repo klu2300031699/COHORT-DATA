@@ -34,8 +34,16 @@ export default function FacultyInfo({ facultyData, onReset }) {
           <span className="faculty-card__value faculty-card__cohort">{facultyData.cohort}</span>
         </div>
         <div className="faculty-card__detail">
-          <span className="faculty-card__label">Department</span>
-          <span className="faculty-card__value">{facultyData.dept}</span>
+          <span className="faculty-card__label">Cohort Name</span>
+          <span className="faculty-card__value">{facultyData.cohortName}</span>
+        </div>
+        <div className="faculty-card__detail">
+          <span className="faculty-card__label">Designation</span>
+          <span className="faculty-card__value">{facultyData.designation}</span>
+        </div>
+        <div className="faculty-card__detail">
+          <span className="faculty-card__label">Mobile</span>
+          <span className="faculty-card__value">{facultyData.mobile}</span>
         </div>
       </div>
     </div>

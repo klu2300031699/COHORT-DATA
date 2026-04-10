@@ -9,6 +9,26 @@ export default function SearchSection() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  // Robust CSV parser for quoted fields with commas
+  const parseCSVLine = (line) => {
+    const columns = []
+    let current = ''
+    let inQuotes = false
+    for (let j = 0; j < line.length; j++) {
+      const char = line[j]
+      if (char === '"') {
+        inQuotes = !inQuotes
+      } else if (char === ',' && !inQuotes) {
+        columns.push(current.trim())
+        current = ''
+      } else {
+        current += char
+      }
+    }
+    columns.push(current.trim())
+    return columns
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -16,8 +36,8 @@ export default function SearchSection() {
     setFacultyData(null)
 
     try {
-      // Fetch Faculty details CSV
-      const response = await fetch('/Faculty details.csv')
+      // Fetch Faculty data CSV
+      const response = await fetch('/faculty data.csv')
       const text = await response.text()
       const lines = text.split('\n')
       
@@ -27,16 +47,22 @@ export default function SearchSection() {
         const line = lines[i].trim()
         if (!line) continue
         
-        const columns = line.split(',')
-        const empId = columns[1]?.trim()
+        // New CSV format: empid, name, designation, cohortno, cohortname, mobile
+        const columns = parseCSVLine(line)
+        const empId = columns[0]?.trim()
         
         if (empId === employeeId.trim()) {
+          // Extract cohort code from "Cohort E06" -> "E06"
+          const cohortRaw = columns[3]?.trim() || ''
+          const cohortCode = cohortRaw.replace(/^Cohort\s+/i, '')
+          
           setFacultyData({
-            sNo: columns[0],
-            empId: columns[1],
-            empName: columns[2],
-            cohort: columns[3],
-            dept: columns[4]
+            empId: columns[0]?.trim(),
+            empName: columns[1]?.trim(),
+            designation: columns[2]?.trim(),
+            cohort: cohortCode,
+            cohortName: columns[4]?.trim(),
+            mobile: columns[5]?.trim()
           })
           found = true
           break
@@ -102,7 +128,7 @@ export default function SearchSection() {
         ) : (
           <>
             <FacultyInfo facultyData={facultyData} onReset={handleReset} />
-            <CourseSelection cohort={facultyData.cohort} employeeId={facultyData.empId} />
+            <CourseSelection cohort={facultyData.cohort} employeeId={facultyData.empId} name={facultyData.empName} cohortName={facultyData.cohortName} />
           </>
         )}
       </div>

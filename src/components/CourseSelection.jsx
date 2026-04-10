@@ -4,7 +4,7 @@ import './SubmittedCourses.css'
 import CustomAlert from './CustomAlert'
 import CustomConfirm from './CustomConfirm'
 
-export default function CourseSelection({ cohort, employeeId, name, department, isAdminView = false }) {
+export default function CourseSelection({ cohort, employeeId, name, cohortName, isAdminView = false }) {
   const [courses, setCourses] = useState({})
   const [allCourses, setAllCourses] = useState([])
   const [selectedSemester, setSelectedSemester] = useState('')
@@ -302,7 +302,7 @@ export default function CourseSelection({ cohort, employeeId, name, department, 
       employeeId,
       name,  // Faculty name
       cohort,
-      department,
+      cohortName,
       selectedCourses: selectedCoursesData
     }
 
