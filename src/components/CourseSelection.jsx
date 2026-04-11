@@ -12,6 +12,7 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
   const [selectedCourses, setSelectedCourses] = useState([])
   const [coursePriorities, setCoursePriorities] = useState({})
   const [loading, setLoading] = useState(true)
+  const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [alreadySubmitted, setAlreadySubmitted] = useState(false)
   const [existingSelections, setExistingSelections] = useState([])
@@ -209,6 +210,8 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
   }
 
   const handleSubmit = async () => {
+    // Prevent double-click submissions
+    if (submitting) return
     // Validation: Check if all selected courses have priorities assigned
     const coursesWithoutPriority = selectedCourses.filter(
       courseCode => !coursePriorities[courseCode]
@@ -325,6 +328,7 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
       selectedCourses: selectedCoursesData
     }
 
+    setSubmitting(true)
     try {
       const response = await fetch('https://cohort-backend-production.up.railway.app/api/faculty/submit', {
         method: 'POST',
@@ -364,6 +368,8 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
     } catch (err) {
       showAlert('error', 'Connection Error', 'Error connecting to backend. Please make sure the backend server is running.')
       console.error('Backend connection error:', err)
+    } finally {
+      setSubmitting(false)
     }
   }
 
@@ -925,12 +931,21 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
         <button
           className="course-selection__submit-btn"
           onClick={handleSubmit}
-          disabled={selectedCourses.length === 0}
+          disabled={selectedCourses.length === 0 || submitting}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-          </svg>
-          Submit Selection ({selectedCourses.length} courses)
+          {submitting ? (
+            <>
+              <div className="course-selection__spinner" style={{ width: '20px', height: '20px', borderWidth: '3px' }}></div>
+              Submitting...
+            </>
+          ) : (
+            <>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+              </svg>
+              Submit Selection ({selectedCourses.length} courses)
+            </>
+          )}
         </button>
       </div>
 
