@@ -71,7 +71,7 @@ export default function Header({ user, onLogout }) {
       <div className="registration-header__logo-section">
         <img src="/logo.jpg" alt="logo" className="registration-header__logo" />
         <div className="registration-header__logo-text">
-          <div className="registration-header__logo-title">School of Computing</div>
+          <div className="registration-header__logo-title">School Of Computing</div>
           <div className="registration-header__logo-subtitle">Faculty Option Portal</div>
         </div>
       </div>
@@ -79,7 +79,7 @@ export default function Header({ user, onLogout }) {
       <div className="registration-header__inner">
         <h1 className="registration-header__title">Koneru Lakshmaiah Education Foundation</h1>
         <h2 className="registration-header__subtitle">Faculty Option Portal</h2>
-        <p className="registration-header__subtitle">School of Computing </p>
+        <p className="registration-header__subtitle">School Of Computing </p>
       </div>
 
       <div className="registration-header__right">

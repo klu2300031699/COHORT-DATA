@@ -70,7 +70,7 @@ export default function LoginPage({ onLogin }) {
         <div className="login-page__logo-section">
           <img src="/logo.jpg" alt="logo" className="login-page__logo" />
           <div className="login-page__logo-text">
-            <div className="login-page__logo-title">School of computing</div>
+            <div className="login-page__logo-title">School Of Computing</div>
             <div className="login-page__logo-subtitle">Faculty Option Portal</div>
           </div>
         </div>
@@ -78,7 +78,7 @@ export default function LoginPage({ onLogin }) {
         <div className="login-page__header-center">
           <h1 className="login-page__header-title">Koneru Lakshmaiah Education Foundation</h1>
           <h2 className="login-page__header-subtitle">Faculty Option Portal</h2>
-          <p className="login-page__header-subtitle">School of Computing</p>
+          <p className="login-page__header-subtitle">School Of Computing</p>
         </div>
 
         <div className="login-page__header-right">
