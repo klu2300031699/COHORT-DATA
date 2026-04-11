@@ -248,25 +248,27 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
         return
       }
     } else {
-      // NEW LOGIC: Must select 1 course from each category
+      // Must select ALL courses from each category
       // Check ODD semester categories
       for (const category of Object.keys(oddCategories)) {
+        const totalInCategory = oddCategories[category].length
         const selectedFromCategory = selectedOdd.filter(code =>
           oddCategories[category].some(c => c.courseCode === code)
         )
-        if (selectedFromCategory.length === 0) {
-          showAlert('warning', 'Category Selection Required', `Please select at least 1 course from category "${category}" in ODD semester.`)
+        if (selectedFromCategory.length < totalInCategory) {
+          showAlert('warning', 'Category Selection Required', `Please select all ${totalInCategory} course(s) from category "${category}" in ODD semester. You have selected ${selectedFromCategory.length}.`)
           return
         }
       }
 
       // Check EVEN semester categories
       for (const category of Object.keys(evenCategories)) {
+        const totalInCategory = evenCategories[category].length
         const selectedFromCategory = selectedEven.filter(code =>
           evenCategories[category].some(c => c.courseCode === code)
         )
-        if (selectedFromCategory.length === 0) {
-          showAlert('warning', 'Category Selection Required', `Please select at least 1 course from category "${category}" in EVEN semester.`)
+        if (selectedFromCategory.length < totalInCategory) {
+          showAlert('warning', 'Category Selection Required', `Please select all ${totalInCategory} course(s) from category "${category}" in EVEN semester. You have selected ${selectedFromCategory.length}.`)
           return
         }
       }
