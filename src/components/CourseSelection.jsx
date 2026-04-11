@@ -328,7 +328,7 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
         const option2Count = selectedCourses.filter(c => coursePriorities[c]?.includes('Option 2')).length
         const option3Count = selectedCourses.filter(c => coursePriorities[c]?.includes('Option 3')).length
 
-        showAlert('success', 'Submission Successful', 
+        showAlert('success', 'Submission Successful',
           `Successfully submitted ${selectedCourses.length} course(s) to database!\n\n` +
           `Employee ID: ${employeeId}\n` +
           `Name: ${name}\n` +
@@ -408,7 +408,7 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
           if (response.ok) {
             setExistingSelections(prev => prev.filter(sel => sel.id !== id))
             showAlert('success', 'Deletion Successful', 'Course deleted successfully!')
-            
+
             // If no more selections, reset the view
             if (existingSelections.length === 1) {
               setAlreadySubmitted(false)
@@ -480,34 +480,34 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
     return (
       <>
         <div className="course-selection">
-        <div className="course-selection__year-heading">
-          AY: 2026-27 (ODD & EVEN SEMESTER COURSES)
-        </div>
-        <div className="course-selection__header">
-          <h3 className="course-selection__title">
-            Available Courses for Cohort <span className="faculty-card__value faculty-card__cohort">{cohort}</span>
-          </h3>
-          <div className="course-selection__counter">
-            <span className="course-selection__count">{selectedCourses.length}</span>
-            <span className="course-selection__count-label">Selected</span>
+          <div className="course-selection__year-heading">
+            AY: 2026-27 (ODD & EVEN SEMESTER COURSES)
           </div>
+          <div className="course-selection__header">
+            <h3 className="course-selection__title">
+              Available Courses for Cohort <span className="faculty-card__value faculty-card__cohort">{cohort}</span>
+            </h3>
+            <div className="course-selection__counter">
+              <span className="course-selection__count">{selectedCourses.length}</span>
+              <span className="course-selection__count-label">Selected</span>
+            </div>
+          </div>
+          <div className="course-selection__error">{error}</div>
+          <CustomAlert
+            show={alertConfig.show}
+            type={alertConfig.type}
+            title={alertConfig.title}
+            message={alertConfig.message}
+            onClose={closeAlert}
+          />
+          <CustomConfirm
+            show={confirmConfig.show}
+            title={confirmConfig.title}
+            message={confirmConfig.message}
+            onConfirm={handleConfirm}
+            onCancel={closeConfirm}
+          />
         </div>
-        <div className="course-selection__error">{error}</div>
-        <CustomAlert
-          show={alertConfig.show}
-          type={alertConfig.type}
-          title={alertConfig.title}
-          message={alertConfig.message}
-          onClose={closeAlert}
-        />
-        <CustomConfirm
-          show={confirmConfig.show}
-          title={confirmConfig.title}
-          message={confirmConfig.message}
-          onConfirm={handleConfirm}
-          onCancel={closeConfirm}
-        />
-      </div>
       </>
     )
   }
@@ -535,20 +535,20 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
           </svg>
           <p>
-            {isAdminView 
-              ? "Admin View: You can edit or delete course selections below." 
+            {isAdminView
+              ? "Admin View: You can edit or delete course selections below."
               : "You have already submitted your course selections. Contact the administrator if you need to make changes."}
           </p>
         </div>
 
         {isAdminView && (
           <div className="course-selection__admin-actions">
-            <button 
-              onClick={handleDeleteAll} 
+            <button
+              onClick={handleDeleteAll}
               className="course-selection__delete-all-btn"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
               </svg>
               Delete All Selections
             </button>
@@ -577,28 +577,28 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
                         <div className="edit-form__row">
                           <div className="edit-form__group">
                             <label>Course Code</label>
-                            <input 
-                              type="text" 
-                              value={editFormData.courseCode} 
-                              onChange={(e) => setEditFormData({...editFormData, courseCode: e.target.value})}
+                            <input
+                              type="text"
+                              value={editFormData.courseCode}
+                              onChange={(e) => setEditFormData({ ...editFormData, courseCode: e.target.value })}
                               className="edit-form__input"
                             />
                           </div>
                           <div className="edit-form__group edit-form__group--wide">
                             <label>Course Name</label>
-                            <input 
-                              type="text" 
-                              value={editFormData.courseName} 
-                              onChange={(e) => setEditFormData({...editFormData, courseName: e.target.value})}
+                            <input
+                              type="text"
+                              value={editFormData.courseName}
+                              onChange={(e) => setEditFormData({ ...editFormData, courseName: e.target.value })}
                               className="edit-form__input"
                             />
                           </div>
                           <div className="edit-form__group">
                             <label>Category</label>
-                            <input 
-                              type="text" 
-                              value={editFormData.category} 
-                              onChange={(e) => setEditFormData({...editFormData, category: e.target.value})}
+                            <input
+                              type="text"
+                              value={editFormData.category}
+                              onChange={(e) => setEditFormData({ ...editFormData, category: e.target.value })}
                               className="edit-form__input"
                             />
                           </div>
@@ -606,9 +606,9 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
                         <div className="edit-form__row">
                           <div className="edit-form__group">
                             <label>Semester</label>
-                            <select 
-                              value={editFormData.semester} 
-                              onChange={(e) => setEditFormData({...editFormData, semester: e.target.value})}
+                            <select
+                              value={editFormData.semester}
+                              onChange={(e) => setEditFormData({ ...editFormData, semester: e.target.value })}
                               className="edit-form__select"
                             >
                               <option value="ODD">ODD</option>
@@ -617,9 +617,9 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
                           </div>
                           <div className="edit-form__group">
                             <label>Priority</label>
-                            <select 
-                              value={editFormData.priority} 
-                              onChange={(e) => setEditFormData({...editFormData, priority: e.target.value})}
+                            <select
+                              value={editFormData.priority}
+                              onChange={(e) => setEditFormData({ ...editFormData, priority: e.target.value })}
                               className="edit-form__select"
                             >
                               <option value="Option 1 [High]">Option 1 [High]</option>
@@ -630,13 +630,13 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
                           <div className="edit-form__actions">
                             <button onClick={() => handleUpdateSubmit(selection.id)} className="edit-form__save-btn">
                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
                               </svg>
                               Save
                             </button>
                             <button onClick={handleCancelEdit} className="edit-form__cancel-btn">
                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
                               </svg>
                               Cancel
                             </button>
@@ -670,12 +670,12 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
                         <div className="table-actions">
                           <button onClick={() => handleEdit(selection)} className="table-action-btn table-action-btn--edit" title="Edit">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-                              <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                              <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
                             </svg>
                           </button>
                           <button onClick={() => handleDelete(selection.id)} className="table-action-btn table-action-btn--delete" title="Delete">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-                              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
                             </svg>
                           </button>
                         </div>
