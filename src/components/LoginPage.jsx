@@ -78,7 +78,7 @@ export default function LoginPage({ onLogin }) {
         <div className="login-page__header-center">
           <h1 className="login-page__header-title">Koneru Lakshmaiah Education Foundation</h1>
           <h2 className="login-page__header-subtitle">Faculty Option Portal</h2>
-          <p className="login-page__header-dept">School of Computing</p>
+          <p className="login-page__header-subtitle">School of Computing</p>
         </div>
 
         <div className="login-page__header-right">
