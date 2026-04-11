@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import FacultyInfo from './FacultyInfo'
 import CourseSelection from './CourseSelection'
 import './AdminSearch.css'
@@ -8,6 +8,44 @@ export default function AdminSearch() {
   const [facultyData, setFacultyData] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [submissionStats, setSubmissionStats] = useState({ submitted: 0, total: 0, loading: true })
+
+  useEffect(() => {
+    fetchSubmissionStats()
+  }, [])
+
+  const fetchSubmissionStats = async () => {
+    try {
+      // Fetch all submissions from backend
+      const [submissionsRes, facultyRes] = await Promise.all([
+        fetch('https://cohort-backend-production.up.railway.app/api/faculty/all'),
+        fetch('/faculty data.csv')
+      ])
+
+      let submittedCount = 0
+      if (submissionsRes.ok) {
+        const data = await submissionsRes.json()
+        // Count unique employee IDs
+        const uniqueEmployees = new Set(data.map(r => r.employeeId))
+        submittedCount = uniqueEmployees.size
+      }
+
+      let totalFaculty = 0
+      if (facultyRes.ok) {
+        const text = await facultyRes.text()
+        const lines = text.split('\n')
+        for (let i = 1; i < lines.length; i++) {
+          const line = lines[i].trim()
+          if (line && line.split(',')[0]?.trim()) totalFaculty++
+        }
+      }
+
+      setSubmissionStats({ submitted: submittedCount, total: totalFaculty, loading: false })
+    } catch (err) {
+      console.error('Error fetching stats:', err)
+      setSubmissionStats(prev => ({ ...prev, loading: false }))
+    }
+  }
 
   // Robust CSV parser for quoted fields with commas
   const parseCSVLine = (line) => {
@@ -98,6 +136,32 @@ export default function AdminSearch() {
           </svg>
           <h2 className="admin-search__title">Search Faculty by Employee ID</h2>
         </div>
+
+        {/* Submission Stats */}
+        {!submissionStats.loading && (
+          <div className="admin-search__stats">
+            <div className="admin-search__stats-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+              </svg>
+              <div className="admin-search__stats-info">
+                <span className="admin-search__stats-label">Faculty Submissions</span>
+                <span className="admin-search__stats-value">
+                  <strong>{submissionStats.submitted}</strong> / {submissionStats.total} faculty submitted
+                </span>
+              </div>
+              <div className="admin-search__stats-progress">
+                <div
+                  className="admin-search__stats-fill"
+                  style={{ width: submissionStats.total > 0 ? `${(submissionStats.submitted / submissionStats.total) * 100}%` : '0%' }}
+                ></div>
+              </div>
+              <span className="admin-search__stats-percent">
+                {submissionStats.total > 0 ? Math.round((submissionStats.submitted / submissionStats.total) * 100) : 0}%
+              </span>
+            </div>
+          </div>
+        )}
         
         {!facultyData ? (
           <form onSubmit={handleSubmit} className="admin-search__form">
