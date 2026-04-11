@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, useMemo } from 'react'
 import './CourseSelection.css'
 import './SubmittedCourses.css'
 import CustomAlert from './CustomAlert'
 import CustomConfirm from './CustomConfirm'
 
 export default function CourseSelection({ cohort, employeeId, name, cohortName, isAdminView = false }) {
-  const [courses, setCourses] = useState({})
+  const [groupedBySemester, setGroupedBySemester] = useState({ ODD: {}, EVEN: {} })
+  const scrollAfterAlertRef = useRef(null)
   const [allCourses, setAllCourses] = useState([])
   const [selectedSemester, setSelectedSemester] = useState('')
   const [selectedCourses, setSelectedCourses] = useState([])
@@ -25,6 +26,22 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
 
   const closeAlert = () => {
     setAlertConfig({ show: false, type: 'info', title: '', message: '' })
+    // After closing alert, scroll to the problem area if set
+    if (scrollAfterAlertRef.current) {
+      const { semester, categoryId } = scrollAfterAlertRef.current
+      scrollAfterAlertRef.current = null
+      if (selectedSemester !== semester) {
+        setSelectedSemester(semester)
+      }
+      setTimeout(() => {
+        const el = document.getElementById(categoryId)
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          el.classList.add('course-category--highlight')
+          setTimeout(() => el.classList.remove('course-category--highlight'), 2500)
+        }
+      }, 200)
+    }
   }
 
   const showConfirm = (title, message, onConfirm) => {
@@ -50,29 +67,34 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
   useEffect(() => {
     if (allCourses.length === 0) return
 
-    // Only display courses when a semester is selected
-    if (!selectedSemester) {
-      setCourses({})
-      return
-    }
-
-    // Filter courses by semester
-    const filteredCourses = allCourses.filter(c =>
-      c.sem?.toUpperCase() === selectedSemester
-    )
-
-    // Group by category
-    const grouped = {}
-    filteredCourses.forEach(course => {
-      const category = course.cat || 'Other'
-      if (!grouped[category]) {
-        grouped[category] = []
+    const odd = {}
+    const even = {}
+    allCourses.forEach(course => {
+      const sem = course.sem?.toUpperCase()
+      const cat = course.cat || 'Other'
+      if (sem === 'ODD') {
+        if (!odd[cat]) odd[cat] = []
+        odd[cat].push(course)
+      } else if (sem === 'EVEN') {
+        if (!even[cat]) even[cat] = []
+        even[cat].push(course)
       }
-      grouped[category].push(course)
     })
+    setGroupedBySemester({ ODD: odd, EVEN: even })
+  }, [allCourses])
 
-    setCourses(grouped)
-  }, [selectedSemester, allCourses])
+  // Compute progress counts
+  const progressCounts = useMemo(() => {
+    const oddTotal = allCourses.filter(c => c.sem?.toUpperCase() === 'ODD').length
+    const evenTotal = allCourses.filter(c => c.sem?.toUpperCase() === 'EVEN').length
+    const oddSelected = selectedCourses.filter(code =>
+      allCourses.some(c => c.courseCode === code && c.sem?.toUpperCase() === 'ODD')
+    ).length
+    const evenSelected = selectedCourses.filter(code =>
+      allCourses.some(c => c.courseCode === code && c.sem?.toUpperCase() === 'EVEN')
+    ).length
+    return { oddTotal, evenTotal, oddSelected, evenSelected }
+  }, [allCourses, selectedCourses])
   const checkExistingSubmission = async () => {
     try {
       const response = await fetch(`https://cohort-backend-production.up.railway.app/api/faculty/${employeeId}`)
@@ -142,25 +164,12 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
 
       if (allCourses.length === 0) {
         setError(`No courses found for cohort ${cohort}`)
-        setCourses({})
         setLoading(false)
         return
       }
 
-      // Store all courses
+      // Store all courses (useEffect will compute groupedBySemester)
       setAllCourses(allCourses)
-
-      // Group by category
-      const grouped = {}
-      allCourses.forEach(course => {
-        const category = course.cat || 'Other'
-        if (!grouped[category]) {
-          grouped[category] = []
-        }
-        grouped[category].push(course)
-      })
-
-      setCourses(grouped)
     } catch (err) {
       setError('Error loading courses. Please try again.')
       console.error(err)
@@ -256,6 +265,7 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
           oddCategories[category].some(c => c.courseCode === code)
         )
         if (selectedFromCategory.length < totalInCategory) {
+          scrollAfterAlertRef.current = { semester: 'ODD', categoryId: `category-ODD-${category}` }
           showAlert('warning', 'Category Selection Required', `Please select all ${totalInCategory} course(s) from category "${category}" in ODD semester. You have selected ${selectedFromCategory.length}.`)
           return
         }
@@ -268,6 +278,7 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
           evenCategories[category].some(c => c.courseCode === code)
         )
         if (selectedFromCategory.length < totalInCategory) {
+          scrollAfterAlertRef.current = { semester: 'EVEN', categoryId: `category-EVEN-${category}` }
           showAlert('warning', 'Category Selection Required', `Please select all ${totalInCategory} course(s) from category "${category}" in EVEN semester. You have selected ${selectedFromCategory.length}.`)
           return
         }
@@ -279,6 +290,7 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
       courseCode => coursePriorities[courseCode]?.includes('Option 1')
     )
     if (option1OddCourses.length === 0) {
+      scrollAfterAlertRef.current = { semester: 'ODD', categoryId: 'semester-section-ODD' }
       showAlert('warning', 'High Priority Required', 'Please select at least ONE course with Option 1 [High] priority from ODD semester.')
       return
     }
@@ -288,6 +300,7 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
       courseCode => coursePriorities[courseCode]?.includes('Option 1')
     )
     if (option1EvenCourses.length === 0) {
+      scrollAfterAlertRef.current = { semester: 'EVEN', categoryId: 'semester-section-EVEN' }
       showAlert('warning', 'High Priority Required', 'Please select at least ONE course with Option 1 [High] priority from EVEN semester.')
       return
     }
@@ -734,6 +747,46 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
         </div>
       </div>
 
+      {/* Progress indicators */}
+      {allCourses.length > 0 && (
+        <div className="course-selection__progress">
+          <button
+            type="button"
+            className={`progress-badge progress-badge--odd ${selectedSemester === 'ODD' ? 'progress-badge--active' : ''} ${progressCounts.oddSelected === progressCounts.oddTotal && progressCounts.oddTotal > 0 ? 'progress-badge--complete' : ''}`}
+            onClick={() => {
+              setSelectedSemester('ODD')
+              setTimeout(() => {
+                document.getElementById('semester-section-ODD')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+              }, 100)
+            }}
+          >
+            <span className="progress-badge__label">ODD Semester</span>
+            <span className="progress-badge__count">{progressCounts.oddSelected} / {progressCounts.oddTotal}</span>
+            <span className="progress-badge__bar">
+              <span className="progress-badge__fill" style={{ width: progressCounts.oddTotal > 0 ? `${(progressCounts.oddSelected / progressCounts.oddTotal) * 100}%` : '0%' }}></span>
+            </span>
+            {progressCounts.oddSelected === progressCounts.oddTotal && progressCounts.oddTotal > 0 && <span className="progress-badge__check">✓</span>}
+          </button>
+          <button
+            type="button"
+            className={`progress-badge progress-badge--even ${selectedSemester === 'EVEN' ? 'progress-badge--active' : ''} ${progressCounts.evenSelected === progressCounts.evenTotal && progressCounts.evenTotal > 0 ? 'progress-badge--complete' : ''}`}
+            onClick={() => {
+              setSelectedSemester('EVEN')
+              setTimeout(() => {
+                document.getElementById('semester-section-EVEN')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+              }, 100)
+            }}
+          >
+            <span className="progress-badge__label">EVEN Semester</span>
+            <span className="progress-badge__count">{progressCounts.evenSelected} / {progressCounts.evenTotal}</span>
+            <span className="progress-badge__bar">
+              <span className="progress-badge__fill" style={{ width: progressCounts.evenTotal > 0 ? `${(progressCounts.evenSelected / progressCounts.evenTotal) * 100}%` : '0%' }}></span>
+            </span>
+            {progressCounts.evenSelected === progressCounts.evenTotal && progressCounts.evenTotal > 0 && <span className="progress-badge__check">✓</span>}
+          </button>
+        </div>
+      )}
+
       <div className="course-selection__header">
         <h3 className="course-selection__title">
           Available Courses for Cohort <span className="course-selection__cohort-badge">{cohort}</span>
@@ -742,102 +795,129 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
           <span className="course-selection__count">{selectedCourses.length}</span>
           <span className="course-selection__count-label">Selected</span>
         </div>
-
       </div>
 
-      {Object.keys(courses).length === 0 ? (
+      {!selectedSemester ? (
         <div className="course-selection__placeholder">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
             <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
           </svg>
           <h3 className="course-selection__placeholder-title">Select a Semester to View Courses</h3>
           <p className="course-selection__placeholder-text">
-            Please choose either <strong>ODD</strong> or <strong>EVEN</strong> semester from the dropdown above to view and select available courses for your cohort.
+            Please choose either <strong>ODD</strong> or <strong>EVEN</strong> semester from the dropdown above, or click the progress badges to quickly switch.
           </p>
         </div>
       ) : (
         <div className="course-selection__categories">
-          {Object.keys(courses).sort().map(category => (
-            <div key={category} className="course-category">
-              <div className="course-category__header">
-                <h4 className="course-category__title">{category}</h4>
-                <span className="course-category__count">{courses[category].length} courses</span>
-              </div>
+          {['ODD', 'EVEN'].map(sem => {
+            if (selectedSemester !== sem) return null
+            const semCourses = groupedBySemester[sem]
+            if (!semCourses || Object.keys(semCourses).length === 0) return null
 
-              <div className="course-category__list">
-                {courses[category].map(course => (
-                  <label
-                    key={course.courseCode}
-                    className={`course-item ${selectedCourses.includes(course.courseCode) ? 'course-item--selected' : ''} course-item--${course.sem?.toLowerCase() === 'odd' ? 'odd' : course.sem?.toLowerCase() === 'even' ? 'even' : ''}`}
-                  >
-                    <div className="course-item__checkbox-wrapper">
-                      <input
-                        type="checkbox"
-                        className="course-item__checkbox"
-                        checked={selectedCourses.includes(course.courseCode)}
-                        onChange={() => handleCourseToggle(course.courseCode)}
-                      />
-                    </div>
-                    <div className="course-item__content">
-                      <div className="course-item__header">
-                        <span className="course-item__code">{course.courseCode}</span>
-                        <span className={`course-item__sem course-item__sem--${course.sem?.toLowerCase() === 'odd' ? 'odd' : course.sem?.toLowerCase() === 'even' ? 'even' : 'other'}`}>{course.sem}</span>
-                      </div>
-                      <p className="course-item__title">{course.courseTitle}</p>
+            const semSelectedCount = selectedCourses.filter(code =>
+              allCourses.some(c => c.courseCode === code && c.sem?.toUpperCase() === sem)
+            ).length
+            const semTotalCount = allCourses.filter(c => c.sem?.toUpperCase() === sem).length
 
-                      <div className="course-item__workload">
-                        {course.L > 0 && <span className="workload-badge workload-badge--lecture" title="Lecture hours per week">L: {course.L}</span>}
-                        {course.T > 0 && <span className="workload-badge workload-badge--tutorial" title="Tutorial hours per week">T: {course.T}</span>}
-                        {course.P > 0 && <span className="workload-badge workload-badge--practical" title="Practical hours per week">P: {course.P}</span>}
-                        {course.S > 0 && <span className="workload-badge workload-badge--skill" title="Skill hours per week">S: {course.S}</span>}
-                        <span className="workload-badge workload-badge--total" title="Total contact hours per week">
-                          Total: {course.L + course.T + course.P + course.S} hrs/wk
-                        </span>
-                      </div>
+            return (
+              <div key={sem} id={`semester-section-${sem}`} className="course-selection__semester-section">
 
-                      {selectedCourses.includes(course.courseCode) && (
-                        <div className="course-item__priority">
-                          <span className="course-item__priority-label">Priority:</span>
-                          <div className="course-item__priority-options">
-                            <label className={`priority-radio ${coursePriorities[course.courseCode]?.includes('Option 1') ? 'priority-radio--high' : ''}`}>
-                              <input
-                                type="radio"
-                                name={`priority-${course.courseCode}`}
-                                value="Option 1"
-                                checked={coursePriorities[course.courseCode]?.includes('Option 1')}
-                                onChange={(e) => handlePriorityChange(course.courseCode, e.target.value)}
-                              />
-                              <span className="priority-radio__label">Option 1 [High]</span>
-                            </label>
-                            <label className={`priority-radio ${coursePriorities[course.courseCode]?.includes('Option 2') ? 'priority-radio--medium' : ''}`}>
-                              <input
-                                type="radio"
-                                name={`priority-${course.courseCode}`}
-                                value="Option 2"
-                                checked={coursePriorities[course.courseCode]?.includes('Option 2')}
-                                onChange={(e) => handlePriorityChange(course.courseCode, e.target.value)}
-                              />
-                              <span className="priority-radio__label">Option 2 [Medium]</span>
-                            </label>
-                            <label className={`priority-radio ${coursePriorities[course.courseCode]?.includes('Option 3') ? 'priority-radio--poor' : ''}`}>
-                              <input
-                                type="radio"
-                                name={`priority-${course.courseCode}`}
-                                value="Option 3"
-                                checked={coursePriorities[course.courseCode]?.includes('Option 3')}
-                                onChange={(e) => handlePriorityChange(course.courseCode, e.target.value)}
-                              />
-                              <span className="priority-radio__label">Option 3 [Low]</span>
-                            </label>
-                          </div>
+
+                {Object.keys(semCourses).sort().map(category => {
+                  const catCourses = semCourses[category]
+                  const catSelectedCount = catCourses.filter(c => selectedCourses.includes(c.courseCode)).length
+                  const allSelected = catSelectedCount === catCourses.length
+
+                  return (
+                    <div key={`${sem}-${category}`} id={`category-${sem}-${category}`} className={`course-category ${allSelected ? 'course-category--all-selected' : ''}`}>
+                      <div className="course-category__header">
+                        <h4 className="course-category__title">{category}</h4>
+                        <div className="course-category__meta">
+                          <span className={`course-category__progress ${allSelected ? 'course-category__progress--complete' : ''}`}>
+                            {catSelectedCount}/{catCourses.length} selected{allSelected && ' ✓'}
+                          </span>
+                          <span className="course-category__count">{catCourses.length} courses</span>
                         </div>
-                      )}
+                      </div>
+
+                      <div className="course-category__list">
+                        {catCourses.map(course => (
+                          <label
+                            key={course.courseCode}
+                            className={`course-item ${selectedCourses.includes(course.courseCode) ? 'course-item--selected' : ''} course-item--${course.sem?.toLowerCase() === 'odd' ? 'odd' : course.sem?.toLowerCase() === 'even' ? 'even' : ''}`}
+                          >
+                            <div className="course-item__checkbox-wrapper">
+                              <input
+                                type="checkbox"
+                                className="course-item__checkbox"
+                                checked={selectedCourses.includes(course.courseCode)}
+                                onChange={() => handleCourseToggle(course.courseCode)}
+                              />
+                            </div>
+                            <div className="course-item__content">
+                              <div className="course-item__header">
+                                <span className="course-item__code">{course.courseCode}</span>
+                                <span className={`course-item__sem course-item__sem--${course.sem?.toLowerCase() === 'odd' ? 'odd' : course.sem?.toLowerCase() === 'even' ? 'even' : 'other'}`}>{course.sem}</span>
+                              </div>
+                              <p className="course-item__title">{course.courseTitle}</p>
+
+                              <div className="course-item__workload">
+                                {course.L > 0 && <span className="workload-badge workload-badge--lecture" title="Lecture hours per week">L: {course.L}</span>}
+                                {course.T > 0 && <span className="workload-badge workload-badge--tutorial" title="Tutorial hours per week">T: {course.T}</span>}
+                                {course.P > 0 && <span className="workload-badge workload-badge--practical" title="Practical hours per week">P: {course.P}</span>}
+                                {course.S > 0 && <span className="workload-badge workload-badge--skill" title="Skill hours per week">S: {course.S}</span>}
+                                <span className="workload-badge workload-badge--total" title="Total contact hours per week">
+                                  Total: {course.L + course.T + course.P + course.S} hrs/wk
+                                </span>
+                              </div>
+
+                              {selectedCourses.includes(course.courseCode) && (
+                                <div className="course-item__priority">
+                                  <span className="course-item__priority-label">Priority:</span>
+                                  <div className="course-item__priority-options">
+                                    <label className={`priority-radio ${coursePriorities[course.courseCode]?.includes('Option 1') ? 'priority-radio--high' : ''}`}>
+                                      <input
+                                        type="radio"
+                                        name={`priority-${course.courseCode}`}
+                                        value="Option 1"
+                                        checked={coursePriorities[course.courseCode]?.includes('Option 1')}
+                                        onChange={(e) => handlePriorityChange(course.courseCode, e.target.value)}
+                                      />
+                                      <span className="priority-radio__label">Option 1 [High]</span>
+                                    </label>
+                                    <label className={`priority-radio ${coursePriorities[course.courseCode]?.includes('Option 2') ? 'priority-radio--medium' : ''}`}>
+                                      <input
+                                        type="radio"
+                                        name={`priority-${course.courseCode}`}
+                                        value="Option 2"
+                                        checked={coursePriorities[course.courseCode]?.includes('Option 2')}
+                                        onChange={(e) => handlePriorityChange(course.courseCode, e.target.value)}
+                                      />
+                                      <span className="priority-radio__label">Option 2 [Medium]</span>
+                                    </label>
+                                    <label className={`priority-radio ${coursePriorities[course.courseCode]?.includes('Option 3') ? 'priority-radio--poor' : ''}`}>
+                                      <input
+                                        type="radio"
+                                        name={`priority-${course.courseCode}`}
+                                        value="Option 3"
+                                        checked={coursePriorities[course.courseCode]?.includes('Option 3')}
+                                        onChange={(e) => handlePriorityChange(course.courseCode, e.target.value)}
+                                      />
+                                      <span className="priority-radio__label">Option 3 [Low]</span>
+                                    </label>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </label>
+                        ))}
+                      </div>
                     </div>
-                  </label>
-                ))}
+                  )
+                })}
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       )}
 
