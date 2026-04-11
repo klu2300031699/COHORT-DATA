@@ -37,11 +37,11 @@ export default function Header({ user, onLogout }) {
           item.id || '',
           item.employeeId || '',
           `"${(item.facultyName || '').replace(/"/g, '""')}"`,
-          item.cohort || '',
-          item.cohortName || item.department || '',
+          `"${(item.cohort || '').replace(/"/g, '""')}"`,
+          `"${(item.cohortName || item.department || '').replace(/"/g, '""')}"`,
           item.courseCode || '',
           `"${(item.courseName || '').replace(/"/g, '""')}"`,
-          item.category || '',
+          `"${(item.category || '').replace(/"/g, '""')}"`,
           item.semester || '',
           item.priority || ''
         ]
