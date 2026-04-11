@@ -131,7 +131,11 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
             cohort: columns[2],
             courseCode: columns[3],
             courseTitle: columns[4]?.replace(/^"|"$/g, ''),
-            sem: columns[5]?.replace(/^"|"$/g, '')
+            sem: columns[5]?.replace(/^"|"$/g, ''),
+            L: parseInt(columns[6]) || 0,
+            T: parseInt(columns[7]) || 0,
+            P: parseInt(columns[8]) || 0,
+            S: parseInt(columns[9]) || 0
           })
         }
       }
@@ -778,6 +782,16 @@ export default function CourseSelection({ cohort, employeeId, name, cohortName, 
                         <span className={`course-item__sem course-item__sem--${course.sem?.toLowerCase() === 'odd' ? 'odd' : course.sem?.toLowerCase() === 'even' ? 'even' : 'other'}`}>{course.sem}</span>
                       </div>
                       <p className="course-item__title">{course.courseTitle}</p>
+
+                      <div className="course-item__workload">
+                        {course.L > 0 && <span className="workload-badge workload-badge--lecture" title="Lecture hours per week">L: {course.L}</span>}
+                        {course.T > 0 && <span className="workload-badge workload-badge--tutorial" title="Tutorial hours per week">T: {course.T}</span>}
+                        {course.P > 0 && <span className="workload-badge workload-badge--practical" title="Practical hours per week">P: {course.P}</span>}
+                        {course.S > 0 && <span className="workload-badge workload-badge--skill" title="Skill hours per week">S: {course.S}</span>}
+                        <span className="workload-badge workload-badge--total" title="Total contact hours per week">
+                          Total: {course.L + course.T + course.P + course.S} hrs/wk
+                        </span>
+                      </div>
 
                       {selectedCourses.includes(course.courseCode) && (
                         <div className="course-item__priority">
