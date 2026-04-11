@@ -207,7 +207,6 @@ empid,name,designation,cohortno,cohortname,mobile
 
 
 
-
 10,Dr.V.CHANDRA PRAKASH,PROFESSOR,Cohort E06,Competitive Coding & Automata (CCA),9000428511
 439,Dr.V.SRIKANTH,PROFESSOR,Cohort E09,Cyber Security & Blockchain Technology (CSBT),9966662626
 827,Dr.Y.PRASANTH,PROFESSOR,Cohort E27,"Software Engineering, MIS & DevOps (SEDP)",9849956996
@@ -612,7 +611,7 @@ empid,name,designation,cohortno,cohortname,mobile
 9391,Dr. T.SAILAJA,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),8885562220
 9413,Dr. CHAPPALA RAMADEVI,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9849477557
 9427,Mr.CHANDU DELHI POLICE,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9666324111
-9452,Dr. SUJITH ARIYAPADATH,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9447361292
+9452,Dr. SUJITH ARIYAPADATH,Assistant Professor,Cohort E02,Artificial Intelligence (AI),9995836292
 9484,Mrs. VENKATA MADHU BINDU,Assistant Professor,Cohort E11,Data Science & Big Data Analytics (DSBD),9494511759
 9634,Mr. NALLAGORLA VIJAYA GOPAL,Assistant Professor,Cohort E06,Competitive Coding & Automata (CCA),9705608684
 9714,Mrs. Y V K D BHAVANI,Assistant Professor,Cohort E02,Artificial Intelligence (AI),9182476156
