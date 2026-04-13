@@ -79,24 +79,25 @@ empid,name,designation,cohortno,cohortname,mobile
 
 
 
+2272,Dr.Narashimharaju,HOD & Professor,Cohort 999,Design Thinking and Innovation Management,9666693394
+2038,Dr.Suresh Kumar,Dpty HOD & Associate Professor,Cohort 999,Design Thinking and Innovation Management,9441044687
+2126,Dr.Raghavarao,Professor,Cohort 999,Design Thinking and Innovation Management,9553579000
+4568,Dr.Siresha Koneru,Assistant Professor,Cohort E15,Engg. Design,9704567827
+6285,Dr.R.Shankar,Professor,Cohort E05,Cloud and Edge Computing,9840734374
+6446,Dr.N.Ratnakanth,Associate Professor,Cohort E06,Competitive Coding and Automata,9959953354
+7894,DR.K.LAKSHMINARAYANA,Associate Professor,Cohort E16,Cross Platform Development Frameworks,8247083906
+8301,Dr.K.V.G.Naidu,Assistant Professor,Cohort E16,Cross Platform Development Frameworks,9030264588
+8427,T.Nagaraju,Assistant Professor,Cohort E05,Cloud and Edge Computing,9160797968
+8438,Selvamuthukumar. T,Assistant Professor,Cohort E05,Cloud and Edge Computing,8680896474
+9715,Dr. NEERAJ CHANDNANI,Assistant Professor,Cohort E12,Embedded Systems & IOT,8109926811
+9756,Dr Vikram Singh,Assistant Professor,Cohort E26,Smart Mobility and Autonomous Systems,9303478565
+9757,Dr. Debabrata Bej,Assistant Professor,Cohort E12,Embedded Systems & IOT,9064071421
+9776,Dr. Diplesh Gautam,Assistant Professor,Cohort E15,Engg. Design,8770249394
+9796,Dr.Sanny Kumar,Assistant Professor,Cohort 999,Design Thinking and Innovation Management,7068873278
+9886,Sai Laukya,Assistant Professor,Cohort 999,Design Thinking and Innovation Management,8977944490
+9888,Aditya Vadluri,Assistant Professor,Cohort 999,Design Thinking and Innovation Management,8978270509
 
-2272,Dr.Narashimharaju,,Cohort 999,Design Thinking and Innovation Management,
-2038,Dr.Suresh Kumar,,Cohort 999,Design Thinking and Innovation Management,
-2126,Dr.Raghavarao,,Cohort 999,Design Thinking and Innovation Management,
-4568,Dr.Siresha Koneru,,Cohort E15,Engg. Design,
-6285,Dr.R.Shankar,,Cohort E05,Cloud and Edge Computing,
-6446,Dr.N.Ratnakanth,,Cohort E06,Competitive Coding and Automata,
-7894,DR.K.LAKSHMINARAYANA,,Cohort E16,Cross Platform Development Frameworks,
-8301,Dr.K.V.G.Naidu,,Cohort E16,Cross Platform Development Frameworks,
-8427,T.Nagaraju,,Cohort E05,Cloud and Edge Computing,
-8438,Selvamuthukumar. T,,Cohort E05,Cloud and Edge Computing,
-9715,Dr. NEERAJ CHANDNANI,,Cohort E12,Embedded Systems & IOT,
-9756,Dr Vikram Singh,,Cohort E26,Smart Mobility and Autonomous Systems,
-9757,Dr. Debabrata Bej,,Cohort E12,Embedded Systems & IOT,
-9776,Dr. Diplesh Gautam,,Cohort E15,Engg. Design,
-9796,Dr.Sanny Kumar,,Cohort 999,Design Thinking and Innovation Management,
-9886,Sai Laukya,,Cohort 999,Design Thinking and Innovation Management,
-9888,Aditya Vadluri,,Cohort 999,Design Thinking and Innovation Management,
+
 
 
 
@@ -238,23 +239,6 @@ empid,name,designation,cohortno,cohortname,mobile
 
 
 
-2272,Dr.Narashimharaju,HOD & Professor,Cohort 999 & E26,Design Thinking and Innovation Management & Smart Mobility and Autonomous Systems;,9666693394
-2038,Dr.Suresh Kumar,Dpty HOD & Associate Professor,Cohort 999,Design Thinking and Innovation Management,9441044687
-2126,Dr.Raghavarao,Professor,Cohort 999,Design Thinking and Innovation Management,9553579000
-6285,Dr.R.Shankar,Professor,Cohort 999 & E05,Design Thinking and Innovation Management & Cloud and Edge Computing,9840734374
-7894,DR.K.LAKSHMINARAYANA,Associate Professor,Cohort 999 & E16,Design Thinking and Innovation Management & Cross Platform Development Frameworks,8247083906
-6446,Dr.N.Ratnakanth,Associate Professor,Cohort 999 & E06,Design Thinking and Innovation Management & Competitive Coding and Automata,9959953354
-4568,Dr.Siresha Koneru,Assistant Professor,Cohort 999 & E15,Design Thinking and Innovation Management & Engg. Design,9704567827
-8301,Dr.K.V.G.Naidu,Assistant Professor,Cohort 999 & E16,Design Thinking and Innovation Management & Cross Platform Development Frameworks,9030264588
-8427,T.Nagaraju,Assistant Professor,Cohort 999 & E05,Design Thinking and Innovation Management & Cloud and Edge Computing,9160797968
-8438,Selvamuthukumar. T,Assistant Professor,Cohort 999 & E05,Design Thinking and Innovation Management & Cloud and Edge Computing,8680896474
-9715,Dr. NEERAJ CHANDNANI,Assistant Professor,Cohort 999 & E12,Design Thinking and Innovation Management & Embedded Systems and IOT,8109926811
-9756,Dr Vikram Singh ,Assistant Professor,Cohort 999 & E26,Design Thinking and Innovation Management & Smart Mobility and Autonomous Systems;,9303478565
-9757,Dr. Debabrata Bej,Assistant Professor,Cohort 999 & E12,Design Thinking and Innovation Management & Embedded Systems and IOT,9064071421
-9776,Dr. Diplesh Gautam,Assistant Professor,Cohort 999 & E15,Design Thinking and Innovation Management & Engg. Design,8770249394
-9796,Dr.Sanny Kumar ,Assistant Professor,Cohort 999 & MBA,Design Thinking and Innovation Management,7068873278
-9886,Sai Laukya,Assistant Professor,Cohort 999,Design Thinking and Innovation Management,8977944490
-9888,Aditya Vadluri,Assistant Professor,Cohort 999,Design Thinking and Innovation Management,8978270509
 
 
 
