@@ -137,9 +137,9 @@ SL NO,CAT,COHORT,COURSE CODE,COURSE TITLE,SEM,L,T,P,S
 
 147,HIC,999,25DT01IF ,Entrepreneurship Technology Development and Prototyping,ODD,2,0,2,0
 148,HIC,999,25DT02IF ,Problem Definition and Validation,EVEN,2,0,2,0
-150,HIC,999,24DT04IF ,Scalable Solution Development,EVEN,2,0,2,0
-151,HIC,999,24MB4073,Innovation Management,EVEN,3,0,0,0
-152,PRI-CORE,999,23IE4055A,Innovation Project 1,ODD,0,0,10,20
-153,PRI-CORE,999,23IE4056A,Innovation Project 2,EVEN,0,0,10,20
-154,MIN-CORE,999,23MRTP04,Building and Sustaining a Successful Enterprise,ODD,3,0,2,0
-155,MIN-SDP,999,23MRTP05,Tech Innovation Project for Entrepreneurs,EVEN,0,0,6,4
+149,HIC,999,24DT04IF ,Scalable Solution Development,EVEN,2,0,2,0
+150,HIC,999,24MB4073,Innovation Management,EVEN,3,0,0,0
+151,PRI-CORE,999,23IE4055A,Innovation Project 1,ODD,0,0,10,20
+152,PRI-CORE,999,23IE4056A,Innovation Project 2,EVEN,0,0,10,20
+153,MIN-CORE,999,23MRTP04,Building and Sustaining a Successful Enterprise,ODD,3,0,2,0
+154,MIN-SDP,999,23MRTP05,Tech Innovation Project for Entrepreneurs,EVEN,0,0,6,4
