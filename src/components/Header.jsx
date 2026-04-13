@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import './Header.css'
 import CustomAlert from './CustomAlert'
+import CohortTracker from './CohortTracker'
 
 export default function Header({ user, onLogout }) {
   const [alertConfig, setAlertConfig] = useState({ show: false, type: 'info', title: '', message: '' })
   const [removingDuplicates, setRemovingDuplicates] = useState(false)
+  const [showCohortTracker, setShowCohortTracker] = useState(false)
 
   const showAlert = (type, title, message) => {
     setAlertConfig({ show: true, type, title, message })
@@ -165,6 +167,17 @@ export default function Header({ user, onLogout }) {
                   Report
                 </button>
               )}
+              {['Gnanesh', '4868', '1277', '8068', '8215'].includes(user.id) && (
+                <button
+                  className="registration-header__report-btn"
+                  onClick={() => setShowCohortTracker(true)}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                  Cohort Tracker
+                </button>
+              )}
               {user.id === 'Gnanesh' && (
                 <button
                   className="registration-header__report-btn"
@@ -196,6 +209,10 @@ export default function Header({ user, onLogout }) {
         message={alertConfig.message}
         onClose={closeAlert}
       />
+
+      {showCohortTracker && (
+        <CohortTracker onClose={() => setShowCohortTracker(false)} />
+      )}
     </header>
   )
 }
