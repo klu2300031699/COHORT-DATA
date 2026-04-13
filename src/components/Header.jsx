@@ -167,7 +167,7 @@ export default function Header({ user, onLogout }) {
                   Report
                 </button>
               )}
-              {['Gnanesh', '4868', '1277', '8068', '8215', '8964', '6799', '5291', '9122'].includes(user.id) && (
+              {['Gnanesh', '4868', '1277', '8068', '8215', '8964', '6799', '5291', '9122', '1513'].includes(user.id) && (
                 <button
                   className="registration-header__report-btn"
                   onClick={() => setShowCohortTracker(true)}
