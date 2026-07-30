@@ -126,15 +126,20 @@ export default function AdminSearch() {
     <div className="admin-search">
       <div className="admin-search__container">
         <div className="admin-search__header">
-          <svg 
-            className="admin-search__icon" 
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 24 24" 
-            fill="currentColor"
-          >
-            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-          </svg>
-          <h2 className="admin-search__title">Search Faculty by Employee ID</h2>
+          <div className="admin-search__icon-circle">
+            <svg 
+              className="admin-search__icon" 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 24 24" 
+              fill="currentColor"
+            >
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+          </div>
+          <div className="admin-search__header-text">
+            <h2 className="admin-search__title">Faculty Academic Lookup</h2>
+            <p className="admin-search__subtitle">Enter faculty employee ID to fetch course selections and academic metrics</p>
+          </div>
         </div>
 
         {/* Submission Stats */}
@@ -166,23 +171,28 @@ export default function AdminSearch() {
         {!facultyData ? (
           <form onSubmit={handleSubmit} className="admin-search__form">
             <label htmlFor="employee-id" className="admin-search__label">
-              Employee ID
+              FACULTY EMPLOYEE ID
             </label>
             <div className="admin-search__input-group">
-              <input
-                id="employee-id"
-                type="text"
-                className="admin-search__input"
-                placeholder="Enter Employee ID (e.g., 4868)"
-                value={employeeId}
-                onChange={(e) => setEmployeeId(e.target.value)}
-              />
+              <div className="admin-search__input-wrapper">
+                <svg className="admin-search__input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+                <input
+                  id="employee-id"
+                  type="text"
+                  className="admin-search__input"
+                  placeholder="Enter Employee ID (e.g., 4868)"
+                  value={employeeId}
+                  onChange={(e) => setEmployeeId(e.target.value)}
+                />
+              </div>
               <button 
                 type="submit" 
                 className="admin-search__submit"
                 disabled={!employeeId.trim() || loading}
               >
-                {loading ? 'Searching...' : 'Search'}
+                {loading ? 'Searching...' : 'Search Faculty'}
               </button>
             </div>
             {error && <p className="admin-search__error">{error}</p>}

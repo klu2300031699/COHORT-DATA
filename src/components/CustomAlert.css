@@ -1,44 +1,40 @@
 /* Custom Alert Overlay */
 .custom-alert-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10000;
-  padding: 1rem;
+  padding: 1.5rem;
   animation: customAlertFadeIn 0.2s ease-out;
+  font-family: var(--font-heading);
 }
 
 @keyframes customAlertFadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* Custom Alert Container */
 .custom-alert {
   background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(136, 0, 0, 0.2);
-  max-width: 500px;
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+  max-width: 460px;
   width: 100%;
-  padding: 2rem;
+  padding: 2.25rem;
   position: relative;
-  animation: customAlertSlideIn 0.3s ease-out;
-  border: 2px solid #f0eaea;
+  animation: customAlertSlideIn 0.25s ease-out;
+  border: 1px solid #e2e8f0;
 }
 
 @keyframes customAlertSlideIn {
   from {
-    transform: translateY(-30px) scale(0.95);
+    transform: translateY(-20px) scale(0.95);
     opacity: 0;
   }
   to {
@@ -49,126 +45,130 @@
 
 /* Alert Type Variants */
 .custom-alert--success {
-  border-top: 4px solid #28a745;
+  border-top: 4px solid #059669;
 }
 
 .custom-alert--success .custom-alert__icon-wrapper {
-  background: #d4edda;
+  background: #ecfdf5;
 }
 
 .custom-alert--success .custom-alert__icon {
-  color: #28a745;
+  color: #059669;
 }
 
 .custom-alert--success .custom-alert__button {
-  background: #28a745;
+  background: #0f172a;
+  color: #ffffff;
 }
 
 .custom-alert--success .custom-alert__button:hover {
-  background: #218838;
+  background: #1e293b;
 }
 
 .custom-alert--error {
-  border-top: 4px solid #dc3545;
+  border-top: 4px solid #be123c;
 }
 
 .custom-alert--error .custom-alert__icon-wrapper {
-  background: #f8d7da;
+  background: #fff1f2;
 }
 
 .custom-alert--error .custom-alert__icon {
-  color: #dc3545;
+  color: #be123c;
 }
 
 .custom-alert--error .custom-alert__button {
-  background: #dc3545;
+  background: #be123c;
+  color: #ffffff;
 }
 
 .custom-alert--error .custom-alert__button:hover {
-  background: #c82333;
+  background: #9f1239;
 }
 
 .custom-alert--warning {
-  border-top: 4px solid #ffc107;
+  border-top: 4px solid #d97706;
 }
 
 .custom-alert--warning .custom-alert__icon-wrapper {
-  background: #fff3cd;
+  background: #fffbeb;
 }
 
 .custom-alert--warning .custom-alert__icon {
-  color: #ff9800;
+  color: #d97706;
 }
 
 .custom-alert--warning .custom-alert__button {
-  background: #ffc107;
-  color: #000;
+  background: #0f172a;
+  color: #ffffff;
 }
 
 .custom-alert--warning .custom-alert__button:hover {
-  background: #e0a800;
+  background: #1e293b;
 }
 
 .custom-alert--info {
-  border-top: 4px solid #880000;
+  border-top: 4px solid #0284c7;
 }
 
 .custom-alert--info .custom-alert__icon-wrapper {
-  background: #fff6f6;
+  background: #f0f9ff;
 }
 
 .custom-alert--info .custom-alert__icon {
-  color: #880000;
+  color: #0284c7;
 }
 
 .custom-alert--info .custom-alert__button {
-  background: #880000;
+  background: #0f172a;
+  color: #ffffff;
 }
 
 .custom-alert--info .custom-alert__button:hover {
-  background: #6d0000;
+  background: #1e293b;
 }
 
 /* Close Button */
 .custom-alert__close {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: none;
+  top: 1.25rem;
+  right: 1.25rem;
+  background: #f1f5f9;
   border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
   cursor: pointer;
-  padding: 0.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
 }
 
 .custom-alert__close:hover {
-  background: rgba(0, 0, 0, 0.05);
+  background: #e2e8f0;
 }
 
 .custom-alert__close svg {
-  width: 20px;
-  height: 20px;
-  color: #666;
+  width: 16px;
+  height: 16px;
+  color: #64748b;
 }
 
 /* Icon Wrapper */
 .custom-alert__icon-wrapper {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 1.5rem;
+  margin: 0 auto 1.25rem;
 }
 
 .custom-alert__icon {
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
 }
 
 /* Content */
@@ -178,19 +178,20 @@
 }
 
 .custom-alert__title {
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: #000;
-  margin: 0 0 0.75rem 0;
-  line-height: 1.3;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.01em;
 }
 
 .custom-alert__message {
-  font-size: 1rem;
-  color: #333;
+  font-size: 0.925rem;
+  color: #475569;
   line-height: 1.6;
   margin: 0;
   white-space: pre-line;
+  font-family: var(--font-body);
 }
 
 /* Actions */
@@ -201,70 +202,17 @@
 }
 
 .custom-alert__button {
-  padding: 0.75rem 2.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  color: white;
-  background: #880000;
-  border: none;
-  border-radius: 8px;
+  padding: 0.85rem 2rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-radius: 12px;
   cursor: pointer;
-  transition: all 0.2s;
-  min-width: 120px;
+  transition: all 0.2s ease;
+  min-width: 130px;
+  border: none;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
 }
 
 .custom-alert__button:hover {
-  background: #6d0000;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(136, 0, 0, 0.2);
-}
-
-.custom-alert__button:active {
-  transform: translateY(0);
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-  .custom-alert {
-    padding: 1.5rem;
-    margin: 1rem;
-  }
-
-  .custom-alert__icon-wrapper {
-    width: 56px;
-    height: 56px;
-    margin-bottom: 1rem;
-  }
-
-  .custom-alert__icon {
-    width: 32px;
-    height: 32px;
-  }
-
-  .custom-alert__title {
-    font-size: 1.2rem;
-  }
-
-  .custom-alert__message {
-    font-size: 0.95rem;
-  }
-
-  .custom-alert__button {
-    padding: 0.65rem 2rem;
-    font-size: 0.95rem;
-  }
-}
-
-@media (max-width: 400px) {
-  .custom-alert {
-    padding: 1.25rem;
-  }
-
-  .custom-alert__title {
-    font-size: 1.1rem;
-  }
-
-  .custom-alert__message {
-    font-size: 0.9rem;
-  }
 }

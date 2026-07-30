@@ -5,11 +5,71 @@
 }
 
 :root {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  /* Font Family */
+  --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  /* Color Tokens */
+  --header-bg: #0b1329;
+  --header-bg-gradient: linear-gradient(180deg, #0b1329 0%, #0f172a 100%);
+  --header-text: #ffffff;
+  --header-subtext: #94a3b8;
+  
+  --portal-badge-bg: #d97706;
+  --portal-badge-gold: #f59e0b;
+  --portal-badge-text: #ffffff;
+
+  --bg-canvas: #f8fafc;
+  --bg-dot: #cbd5e1;
+
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --card-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+  --card-shadow-hover: 0 20px 30px -10px rgba(15, 23, 42, 0.12);
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+
+  --btn-primary-bg: #0f172a;
+  --btn-primary-hover: #1e293b;
+  --btn-primary-text: #ffffff;
+
+  --btn-secondary-bg: #f1f5f9;
+  --btn-secondary-hover: #e2e8f0;
+  --btn-secondary-text: #334155;
+
+  --focus-ring: 0 0 0 3px rgba(15, 23, 42, 0.15);
+  
+  /* Quick Action Pill Colors */
+  --pill-orange-bg: #fff7ed;
+  --pill-orange-text: #c2410c;
+  --pill-orange-border: #ffedd5;
+
+  --pill-red-bg: #fff1f2;
+  --pill-red-text: #be123c;
+  --pill-red-border: #ffe4e6;
+
+  --pill-yellow-bg: #fffbeb;
+  --pill-yellow-text: #b45309;
+  --pill-yellow-border: #fef3c7;
+
+  --pill-green-bg: #ecfdf5;
+  --pill-green-text: #047857;
+  --pill-green-border: #d1fae5;
+
+  --pill-blue-bg: #f0f9ff;
+  --pill-blue-text: #0369a1;
+  --pill-blue-border: #e0f2fe;
+
+  --pill-purple-bg: #f5f3ff;
+  --pill-purple-text: #6d28d9;
+  --pill-purple-border: #ddd6fe;
+
   line-height: 1.5;
   font-weight: 400;
-  color: #213547;
-  background-color: #ffffff;
+  color: var(--text-primary);
+  background-color: var(--bg-canvas);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -21,10 +81,56 @@ body {
   padding: 0;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #f5f5f5;
+  font-family: var(--font-body);
+  background-color: var(--bg-canvas);
+  /* Modern dot-grid background overlay */
+  background-image: radial-gradient(var(--bg-dot) 1.2px, transparent 1.2px);
+  background-size: 24px 24px;
+  color: var(--text-primary);
 }
 
 #root {
   width: 100%;
   min-height: 100vh;
 }
+
+/* Image 2 Style Portal Pill Badges */
+.portal-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #0b1329;
+  border-radius: 9999px;
+  padding: 0.45rem 1.2rem;
+  font-family: var(--font-heading);
+  font-size: 0.775rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 12px rgba(11, 19, 41, 0.2);
+  width: fit-content;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.portal-pill-badge--white {
+  color: #ffffff;
+}
+
+.portal-pill-badge--white svg {
+  color: #ffffff;
+}
+
+.portal-pill-badge--gold {
+  color: #f59e0b;
+}
+
+.portal-pill-badge--gold svg {
+  color: #f59e0b;
+  fill: currentColor;
+}
+
+/* Global SVG Safety Guard */
+svg {
+  max-width: 100%;
+}
+
